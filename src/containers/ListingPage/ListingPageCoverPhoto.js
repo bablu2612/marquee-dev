@@ -349,15 +349,23 @@ console.log('exta files',extafiles,slectedAddOns);
               categoryConfiguration={config.categoryConfiguration}
               intl={intl}
             />
-<div className='add-on-section'>
-  {slectedAddOns?.map((data)=>{
-    const datanew= extafiles?.find((dt)=> dt?.option === data )
-    return <div>
-      {datanew?.label} <br />
-      <span>Starting price from ${publicData[`pub_extras_availale_${data}_price`]}</span>
-      </div>
-  })}
-</div>
+            <div className={css.addOnSection}>
+              {slectedAddOns?.map((data)=>{
+                const datanew= extafiles?.find((dt)=> dt?.option === data )
+                return <div className={css.facilitesBlock}>
+                  <div className={css.facilitesIcons}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                  <path d="M0.666664 0.5H2V9.5H0.666664V0.5ZM10 0.5H11.3333V9.5H10V0.5ZM3.33333 0.5H4.66666V9.5H3.33333V0.5ZM7.33333 0.5H8.66666V9.5H7.33333V0.5Z" fill="black"/>
+                  </svg>
+                    </div>
+                <div className={css.facilitesHeading}>
+                {datanew?.label} <br />
+                <p>Starting price from ${publicData[`pub_extras_availale_${data}_price`]}</p>
+                  </div>
+                 
+                  </div>
+              })}
+            </div>
             <SectionMapMaybe
               geolocation={geolocation}
               publicData={publicData}

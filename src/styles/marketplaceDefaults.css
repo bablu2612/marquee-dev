@@ -1541,3 +1541,26 @@ textarea {
     margin-top: 32px;
   }
 }
+
+
+.customfield_classs{
+  margin-top: 25px!important;
+    .sub-heading{
+      span{
+        font-size: 13px;
+        line-height: 21px;
+        margin-bottom: 25px;
+        display: block;
+        opacity: 0.6;
+      }
+    }
+    .item{
+      &:has(div){
+        span{
+          display: block;
+          margin-bottom: 15px;
+        }
+      }
+    }
+
+}

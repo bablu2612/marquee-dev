@@ -32,7 +32,7 @@ const FieldCheckboxRenderer = props => {
   const classes = classNames(rootClassName || css.root, className);
   const listClasses = twoColumns ? classNames(css.list, css.twoColumns) : css.list;
   return (
-    <fieldset className={classes}>
+    <fieldset className={`${classes} ${id?.includes('pub_extras_availale') ? 'customfield_classs' : ''}`}>
       {label ? <legend>{label}</legend> : null}
       {id?.includes('pub_extras_availale') &&
       <div className='sub-heading'>
@@ -69,6 +69,7 @@ const FieldCheckboxRenderer = props => {
               placeholder={"Enter estimate price"}
               validate={composeValidators(required("Required"))}
               // autoFocus={autoFocus}
+              className={css.checkboxinput}
             />
               }
             </li>

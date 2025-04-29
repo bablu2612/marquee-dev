@@ -775,3 +775,30 @@
   width: 100%;
   height: 100%;
 }
+
+.addOnSection{
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 15px 0 25px;
+  .facilitesBlock{
+    flex: 0 0 50%;
+    /* padding: 15px; */
+    border-radius: 10px;
+    display: flex;
+    gap: 12px;
+    max-width: calc(50% - 8px);
+    .facilitesIcons{
+    
+      height: 24px;
+    }
+    .facilitesHeading{
+      p{
+        display: block;
+        font-size: 13px;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+}
