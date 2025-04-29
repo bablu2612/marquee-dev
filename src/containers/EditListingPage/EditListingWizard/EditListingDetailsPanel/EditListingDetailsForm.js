@@ -148,7 +148,6 @@ const CategoryField = props => {
   const currentCategoryKey = `${prefix}${level}`;
 
   const categoryConfig = findCategoryConfig(currentCategoryOptions, values[`${prefix}${level}`]);
-
   return (
     <>
       {currentCategoryOptions ? (
@@ -243,7 +242,7 @@ const FieldSelectCategory = props => {
 
 // Add collect data for listing fields (both publicData and privateData) based on configuration
 const AddListingFields = props => {
-  const { listingType, listingFieldsConfig, selectedCategories, formId, intl } = props;
+  const { listingType, listingFieldsConfig, selectedCategories, formId, intl,values } = props;
   const targetCategoryIds = Object.values(selectedCategories);
 
   const fields = listingFieldsConfig.reduce((pickedFields, fieldConfig) => {
@@ -262,6 +261,7 @@ const AddListingFields = props => {
             key={namespacedKey}
             name={namespacedKey}
             fieldConfig={fieldConfig}
+            values={values}
             defaultRequiredMessage={intl.formatMessage({
               id: 'EditListingDetailsForm.defaultRequiredMessage',
             })}
@@ -379,7 +379,6 @@ const EditListingDetailsForm = props => (
         submitInProgress ||
         !hasMandatoryListingTypeData ||
         !isCompatibleCurrency;
-
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           <ErrorMessage fetchErrors={fetchErrors} />
@@ -447,6 +446,7 @@ const EditListingDetailsForm = props => (
               selectedCategories={pickSelectedCategories(values)}
               formId={formId}
               intl={intl}
+              values={values}
             />
           )}
 

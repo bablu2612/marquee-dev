@@ -224,9 +224,29 @@ const getInitialValues = (
   const { listingType } = publicData;
 
   const nestedCategories = pickCategoryFields(publicData, categoryKey, 1, listingCategories);
+
+  const {
+    pub_extras_availale_bar_price,
+    pub_extras_availale_dancefloor_price,
+    pub_extras_availale_flooring_price,
+    pub_extras_availale_furniture_price,
+    pub_extras_availale_generator_price,
+    pub_extras_availale_heating_price,
+    pub_extras_availale_lighting_price,
+    pub_extras_availale_lining_drapes_price
+                }=publicData
   // Initial values for the form
   return {
     title,
+
+    pub_extras_availale_bar_price,
+    pub_extras_availale_dancefloor_price,
+    pub_extras_availale_flooring_price,
+    pub_extras_availale_furniture_price,
+    pub_extras_availale_generator_price,
+    pub_extras_availale_heating_price,
+    pub_extras_availale_lighting_price,
+    pub_extras_availale_lining_drapes_price,
     description,
     ...nestedCategories,
     // Transaction type info: listingType, transactionProcessAlias, unitType
@@ -345,6 +365,17 @@ const EditListingDetailsPanel = props => {
               ...rest
             } = values;
 
+            const {
+pub_extras_availale_bar_price,
+pub_extras_availale_dancefloor_price,
+pub_extras_availale_flooring_price,
+pub_extras_availale_furniture_price,
+pub_extras_availale_generator_price,
+pub_extras_availale_heating_price,
+pub_extras_availale_lighting_price,
+pub_extras_availale_lining_drapes_price
+            }=values
+console.log('values',values)
             const nestedCategories = pickCategoryFields(rest, categoryKey, 1, listingCategories);
             // Remove old categories by explicitly saving null for them.
             const cleanedNestedCategories = {
@@ -366,6 +397,23 @@ const EditListingDetailsPanel = props => {
               listingFields
             );
             // New values for listing attributes
+
+
+            const extras = {
+              pub_extras_availale_bar_price,
+              pub_extras_availale_dancefloor_price,
+              pub_extras_availale_flooring_price,
+              pub_extras_availale_furniture_price,
+              pub_extras_availale_generator_price,
+              pub_extras_availale_heating_price,
+              pub_extras_availale_lighting_price,
+              pub_extras_availale_lining_drapes_price
+            };
+            
+            const filteredExtras = Object.fromEntries(
+              Object.entries(extras).filter(([_, value]) => value !== undefined && value !== null)
+            );
+
             const updateValues = {
               title: title.trim(),
               description,
@@ -375,6 +423,8 @@ const EditListingDetailsPanel = props => {
                 unitType,
                 ...cleanedNestedCategories,
                 ...publicListingFields,
+
+                ...filteredExtras
               },
               privateData: privateListingFields,
               ...setNoAvailabilityForUnbookableListings(transactionProcessAlias),

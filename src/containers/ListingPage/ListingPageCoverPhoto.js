@@ -289,6 +289,10 @@ export const ListingPageComponent = props => {
     setImageCarouselOpen(true);
   };
 
+const extafiles= listingConfig?.listingFields?.find(data=> data.key=== "extras_availale")?.enumOptions;
+const slectedAddOns= publicData?.extras_availale
+console.log('exta files',extafiles,slectedAddOns);
+
   return (
     <Page
       title={schemaTitle}
@@ -345,7 +349,15 @@ export const ListingPageComponent = props => {
               categoryConfiguration={config.categoryConfiguration}
               intl={intl}
             />
-
+<div className='add-on-section'>
+  {slectedAddOns?.map((data)=>{
+    const datanew= extafiles?.find((dt)=> dt?.option === data )
+    return <div>
+      {datanew?.label} <br />
+      <span>Starting price from ${publicData[`pub_extras_availale_${data}_price`]}</span>
+      </div>
+  })}
+</div>
             <SectionMapMaybe
               geolocation={geolocation}
               publicData={publicData}

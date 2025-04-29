@@ -10,9 +10,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { FieldArray } from 'react-final-form-arrays';
-import { FieldCheckbox, ValidationError } from '../../components';
+import { FieldCheckbox, FieldTextInput, ValidationError } from '../../components';
 
 import css from './FieldCheckboxGroup.module.css';
+import { composeValidators, required } from '../../util/validators';
 
 const FieldCheckboxRenderer = props => {
   const {
@@ -25,19 +26,30 @@ const FieldCheckboxRenderer = props => {
     fields,
     options,
     meta,
+    selectedItems,
   } = props;
 
   const classes = classNames(rootClassName || css.root, className);
   const listClasses = twoColumns ? classNames(css.list, css.twoColumns) : css.list;
-
   return (
     <fieldset className={classes}>
       {label ? <legend>{label}</legend> : null}
+      {id?.includes('pub_extras_availale') &&
+      <div className='sub-heading'>
+        <span>
+          When customers enquire about the availability of your marquee, we will also ask them which extras they would like included in their package.
+          Please tick below the extras you are able to offer for rental, and indicate the starting rental price for each.
+          You can update the rental price for each extra in your final quote once the customer has enquired about availability.
+        </span>
+      </div>
+      }
       <ul className={listClasses}>
         {options.map((option, index) => {
           const fieldId = `${id}.${option.key}`;
           const textClassName = optionLabelClassName;
           const textClassNameMaybe = textClassName ? { textClassName } : {};
+         
+
           return (
             <li key={fieldId} className={css.item}>
               <FieldCheckbox
@@ -47,6 +59,18 @@ const FieldCheckboxRenderer = props => {
                 value={option.key}
                 {...textClassNameMaybe}
               />
+              {id?.includes('pub_extras_availale') && selectedItems?.includes(option?.key) &&
+              <FieldTextInput
+              id={`${fieldId}price`}
+              name={`${fields.name}_${option?.key}_price`}
+              // className={css.title}
+              type="text"
+              // label={option.label}
+              placeholder={"Enter estimate price"}
+              validate={composeValidators(required("Required"))}
+              // autoFocus={autoFocus}
+            />
+              }
             </li>
           );
         })}
