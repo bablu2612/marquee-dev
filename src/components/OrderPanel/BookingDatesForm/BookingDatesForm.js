@@ -21,7 +21,7 @@ import { LINE_ITEM_DAY, propTypes } from '../../../util/types';
 import { timeSlotsPerDate } from '../../../util/generators';
 import { BOOKING_PROCESS_NAME } from '../../../transactions/transaction';
 
-import { Form, PrimaryButton, FieldDateRangePicker, FieldSelect, H6 } from '../../../components';
+import { Form, PrimaryButton, FieldDateRangePicker, FieldSelect, H6, InlineTextButton } from '../../../components';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
 
@@ -535,8 +535,14 @@ export const BookingDatesForm = props => {
     priceVariantFieldComponent: PriceVariantFieldComponent,
     preselectedPriceVariant,
     isPublishedListing,
+    onContactUser,
     ...rest
   } = props;
+
+  const onClickContactUser = e => {
+    e.preventDefault();
+    onContactUser();
+  };
   const intl = useIntl();
   const [currentMonth, setCurrentMonth] = useState(getStartOf(TODAY, 'month', timeZone));
   const initialValuesMaybe =
@@ -695,7 +701,11 @@ export const BookingDatesForm = props => {
 
         const isDaily = lineItemUnitType === LINE_ITEM_DAY;
         const submitDisabled = isPriceVariationsInUse && !isPublishedListing;
-
+const contactSellerLink = (
+    <InlineTextButton onClick={onClickContactUser}>
+      <FormattedMessage id="ProductOrderForm.finePrintNoStockLinkText" />
+    </InlineTextButton>
+  );
         return (
           <Form onSubmit={handleSubmit} className={classes} enforcePagePreloadFor="CheckoutPage">
             {PriceVariantFieldComponent ? (
@@ -852,6 +862,8 @@ export const BookingDatesForm = props => {
                 <FormattedMessage id="BookingDatesForm.requestToBook" />
               </PrimaryButton>
             </div>
+            {/* {contactSellerLink} */} 
+            {/* /bablu */}
             <p className={css.finePrint}>
               {payoutDetailsWarning ? (
                 payoutDetailsWarning

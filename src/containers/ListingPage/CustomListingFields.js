@@ -46,7 +46,11 @@ const CustomListingFields = props => {
     <>
       <SectionDetailsMaybe {...props} isFieldForCategory={isFieldForSelectedCategories} />
       {propsForCustomFields.map(customFieldProps => {
+        console.log('customFieldProps',)
         const { schemaType, key, ...fieldProps } = customFieldProps;
+        if(customFieldProps?.key === "extras_availale"){
+          return null
+        }
         return schemaType === SCHEMA_TYPE_MULTI_ENUM ? (
           <SectionMultiEnumMaybe key={key} {...fieldProps} />
         ) : schemaType === SCHEMA_TYPE_TEXT ? (

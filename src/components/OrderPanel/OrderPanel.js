@@ -493,6 +493,8 @@ const OrderPanel = props => {
             monthlyTimeSlots={monthlyTimeSlots}
             onFetchTimeSlots={onFetchTimeSlots}
             timeZone={timeZone}
+            onContactUser={onContactUser}
+
             {...priceVariantsMaybe}
             {...sharedProps}
           />

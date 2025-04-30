@@ -291,7 +291,57 @@ export const ListingPageComponent = props => {
 
 const extafiles= listingConfig?.listingFields?.find(data=> data.key=== "extras_availale")?.enumOptions;
 const slectedAddOns= publicData?.extras_availale
-console.log('exta files',extafiles,slectedAddOns);
+
+
+
+const facilityIcons = {
+  flooring: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none">
+      <path d="M0.25 0H5.5V4.66667H0.25V0ZM0.25 7.33333H5.5V12H0.25V7.33333ZM8.5 0H13.75V4.66667H8.5V0ZM8.5 7.33333H13.75V12H8.5V7.33333Z" fill="black" />
+    </svg>
+  ),
+  heating: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="12" viewBox="0 0 9 12" fill="none">
+      <path d="M4.5 0.166667C3.6875 2.20833 5.58333 3.08333 5.58333 4.83333C5.58333 5.14275 5.4692 5.4395 5.26603 5.65829C5.06287 5.87708 4.78732 6 4.5 6C4.21268 6 3.93713 5.87708 3.73397 5.65829C3.5308 5.4395 3.41667 5.14275 3.41667 4.83333C3.41667 3.66667 2.33333 2.79167 2.33333 1.625C2.33333 0.166667 4.5 0.166667 4.5 0.166667ZM4.5 11.8333C6.66667 11.8333 8.29167 9.73333 8.29167 7.16667C8.29167 6.05833 7.75 4.89167 6.9375 4.01667C7.20833 5.41667 5.3125 6 4.5 7.45833C3.6875 6 1.79167 5.41667 2.0625 4.01667C1.25 4.89167 0.708334 6.05833 0.708334 7.16667C0.708334 9.73333 2.33333 11.8333 4.5 11.8333Z" fill="black"/>
+    </svg>
+  ),
+  bar: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="9" viewBox="0 0 6 9" fill="none">
+      <path d="M0.0833321 0H5.91667L3 3L0.0833321 0ZM2.41667 4H3.58333V8H5.33333V9H0.666665V8H2.41667V4Z" fill="black"/>
+    </svg>
+  ),
+  Tables: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none">
+      <path d="M0.75 0.25H11.25V1.66667H0.75V0.25ZM2.5 1.66667H3.66667V8.75H2.5V1.66667ZM8.33333 1.66667H9.5V8.75H8.33333V1.66667Z" fill="black"/>
+    </svg>
+  ),
+  chairs: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="9" viewBox="0 0 8 9" fill="none">
+      <path d="M2.75 0.375H5.25C5.47101 0.375 5.68297 0.471577 5.83926 0.643485C5.99554 0.815394 6.08333 1.04855 6.08333 1.29167V4.04167H1.91667V1.29167C1.91667 1.04855 2.00446 0.815394 2.16074 0.643485C2.31702 0.471577 2.52899 0.375 2.75 0.375ZM6.91667 4.04167V4.95833H1.08333V4.04167H0.25V5.875H1.08333V8.625H1.91667V5.875H6.08333V8.625H6.91667V5.875H7.75V4.04167H6.91667Z" fill="black"/>
+    </svg>
+  ),
+  lining_drapes: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="0 0 12 10" fill="none">
+      <path d="M0.666664 0.5H2V9.5H0.666664V0.5ZM10 0.5H11.3333V9.5H10V0.5ZM3.33333 0.5H4.66666V9.5H3.33333V0.5ZM7.33333 0.5H8.66666V9.5H7.33333V0.5Z" fill="black"/>
+    </svg>
+  ),
+  dancefloor: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="12" viewBox="0 0 11 12" fill="none">
+      <path d="M0 0H3.5V3.75H0V0ZM3.5 3.75H7V7.5H3.5V3.75ZM7 7.5H10.5V11.25H7V7.5ZM7 3.75H10.5V7.5H7V3.75ZM3.5 7.5H7V11.25H3.5V7.5ZM0 7.5H3.5V11.25H0V7.5Z" fill="black"/>
+    </svg>
+  ),
+  generator: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
+      <path d="M0.333328 0.166667H9.66666V8.83333H0.333328V0.166667ZM4.99999 0.708333L3.24999 3.95833H4.41666V6.125L6.16666 2.875H4.99999V0.708333Z" fill="black"/>
+    </svg>
+  ),
+  lighting: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="12" viewBox="0 0 9 12" fill="none">
+      <path d="M2.87499 11.25H6.12499V10.6667H2.87499V11.25ZM2.87499 10.0833H6.12499V8.91667H2.87499V10.0833ZM4.49999 0.166667C2.06249 0.166667 0.16666 2.5 1.24999 4.83333C1.79166 6 2.33333 6.29167 2.33333 7.16667H6.66666C6.66666 6.29167 7.20833 6 7.74999 4.83333C8.83333 2.5 6.93749 0.166667 5.04166 0.166667H4.49999Z" fill="black"/>
+    </svg>
+  )
+};
+
 
   return (
     <Page
@@ -349,134 +399,25 @@ console.log('exta files',extafiles,slectedAddOns);
               categoryConfiguration={config.categoryConfiguration}
               intl={intl}
             />
-            {/* <div className={css.addOnSection}>
-              {slectedAddOns?.map((data)=>{
-                const datanew= extafiles?.find((dt)=> dt?.option === data )
-                return <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="0 0 12 10" fill="none">
-                  <path d="M0.666664 0.5H2V9.5H0.666664V0.5ZM10 0.5H11.3333V9.5H10V0.5ZM3.33333 0.5H4.66666V9.5H3.33333V0.5ZM7.33333 0.5H8.66666V9.5H7.33333V0.5Z" fill="black"/>
-                  </svg>
-                    </div>
-                    <div className={css.facilitesHeading}>
-                    {datanew?.label} <br />
-                    <p>Starting price from ${publicData[`pub_extras_availale_${data}_price`]}</p>
-                      </div>
-                 
-                  </div>
-              })}
-            </div> */}
+           
 
             <div className={css.addOnSection}>
-            <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none">
-<path d="M0.25 0H5.5V4.66667H0.25V0ZM0.25 7.33333H5.5V12H0.25V7.33333ZM8.5 0H13.75V4.66667H8.5V0ZM8.5 7.33333H13.75V12H8.5V7.33333Z" fill="black"/>
-</svg>
-                    </div>
-                    <div className={css.facilitesHeading}>
-                   <h4>Flooring</h4>
-                    <p>Starting price from 100</p>
+                {slectedAddOns?.map((data)=>{
+                    const datanew= extafiles?.find((dt)=> dt?.option === data )
+                    return <div className={css.facilitesBlock}>
+                    <div className={css.facilitesIcons}>
+                      {facilityIcons[data]}
                       </div>
-                 
-                  </div>
-                  <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="9" height="12" viewBox="0 0 9 12" fill="none">
-<path d="M4.5 0.166667C3.6875 2.20833 5.58333 3.08333 5.58333 4.83333C5.58333 5.14275 5.4692 5.4395 5.26603 5.65829C5.06287 5.87708 4.78732 6 4.5 6C4.21268 6 3.93713 5.87708 3.73397 5.65829C3.5308 5.4395 3.41667 5.14275 3.41667 4.83333C3.41667 3.66667 2.33333 2.79167 2.33333 1.625C2.33333 0.166667 4.5 0.166667 4.5 0.166667ZM4.5 11.8333C6.66667 11.8333 8.29167 9.73333 8.29167 7.16667C8.29167 6.05833 7.75 4.89167 6.9375 4.01667C7.20833 5.41667 5.3125 6 4.5 7.45833C3.6875 6 1.79167 5.41667 2.0625 4.01667C1.25 4.89167 0.708334 6.05833 0.708334 7.16667C0.708334 9.73333 2.33333 11.8333 4.5 11.8333Z" fill="black"/>
-</svg>
-                    </div>
-                    <div className={css.facilitesHeading}>
-                   <h4>Heaters</h4>
-                    <p>Starting price from 100</p>
+                      <div className={css.facilitesHeading}>
+                          <h4>{datanew?.label}</h4>
+                          <p>Starting price from ${publicData[`pub_extras_availale_${data}_price`]}</p>
                       </div>
-                 
-                  </div>
-                  <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="6" height="9" viewBox="0 0 6 9" fill="none">
-<path d="M0.0833321 0H5.91667L3 3L0.0833321 0ZM2.41667 4H3.58333V8H5.33333V9H0.666665V8H2.41667V4Z" fill="black"/>
-</svg>
+                  
                     </div>
-                    <div className={css.facilitesHeading}>
-                   <h4>Bar</h4>
-                    <p>Starting price from 100</p>
-                      </div>
-                 
-                  </div>
-                  <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none">
-<path d="M0.75 0.25H11.25V1.66667H0.75V0.25ZM2.5 1.66667H3.66667V8.75H2.5V1.66667ZM8.33333 1.66667H9.5V8.75H8.33333V1.66667Z" fill="black"/>
-</svg>
-                    </div>
-                    <div className={css.facilitesHeading}>
-                   <h4>Table</h4>
-                    <p>Starting price from 100</p>
-                      </div>
-                 
-                  </div>
-                  <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="8" height="9" viewBox="0 0 8 9" fill="none">
-<path d="M2.75 0.375H5.25C5.47101 0.375 5.68297 0.471577 5.83926 0.643485C5.99554 0.815394 6.08333 1.04855 6.08333 1.29167V4.04167H1.91667V1.29167C1.91667 1.04855 2.00446 0.815394 2.16074 0.643485C2.31702 0.471577 2.52899 0.375 2.75 0.375ZM6.91667 4.04167V4.95833H1.08333V4.04167H0.25V5.875H1.08333V8.625H1.91667V5.875H6.08333V8.625H6.91667V5.875H7.75V4.04167H6.91667Z" fill="black"/>
-</svg>
-                    </div>
-                    <div className={css.facilitesHeading}>
-                   <h4>Chair</h4>
-                    <p>Starting price from 100</p>
-                      </div>
-                 
-                  </div>
-                  <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="0 0 12 10" fill="none">
-                  <path d="M0.666664 0.5H2V9.5H0.666664V0.5ZM10 0.5H11.3333V9.5H10V0.5ZM3.33333 0.5H4.66666V9.5H3.33333V0.5ZM7.33333 0.5H8.66666V9.5H7.33333V0.5Z" fill="black"/>
-                  </svg>
-                    </div>
-                    <div className={css.facilitesHeading}>
-                   <h4>Lining/Drapes</h4>
-                    <p>Starting price from 100</p>
-                      </div>
-                 
-                  </div>
-                  <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="12" viewBox="0 0 11 12" fill="none">
-<path d="M0 0H3.5V3.75H0V0ZM3.5 3.75H7V7.5H3.5V3.75ZM7 7.5H10.5V11.25H7V7.5ZM7 3.75H10.5V7.5H7V3.75ZM3.5 7.5H7V11.25H3.5V7.5ZM0 7.5H3.5V11.25H0V7.5Z" fill="black"/>
-</svg>
-                    </div>
-                    <div className={css.facilitesHeading}>
-                   <h4>Dancefloor</h4>
-                    <p>Starting price from 100</p>
-                      </div>
-                 
-                  </div>
-                  <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
-<path d="M0.333328 0.166667H9.66666V8.83333H0.333328V0.166667ZM4.99999 0.708333L3.24999 3.95833H4.41666V6.125L6.16666 2.875H4.99999V0.708333Z" fill="black"/>
-</svg>
-                    </div>
-                    <div className={css.facilitesHeading}>
-                   <h4>Generator</h4>
-                    <p>Starting price from 100</p>
-                      </div>
-                 
-                  </div>
-                  <div className={css.facilitesBlock}>
-                  <div className={css.facilitesIcons}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="9" height="12" viewBox="0 0 9 12" fill="none">
-<path d="M2.87499 11.25H6.12499V10.6667H2.87499V11.25ZM2.87499 10.0833H6.12499V8.91667H2.87499V10.0833ZM4.49999 0.166667C2.06249 0.166667 0.16666 2.5 1.24999 4.83333C1.79166 6 2.33333 6.29167 2.33333 7.16667H6.66666C6.66666 6.29167 7.20833 6 7.74999 4.83333C8.83333 2.5 6.93749 0.166667 5.04166 0.166667H4.49999Z" fill="black"/>
-</svg>
-                    </div>
-                    <div className={css.facilitesHeading}>
-                   <h4>Lighting</h4>
-                    <p>Starting price from 100</p>
-                      </div>
-                 
-                  </div>
+                  })}
             </div>
+
+
             <SectionMapMaybe
               geolocation={geolocation}
               publicData={publicData}
