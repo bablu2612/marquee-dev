@@ -782,17 +782,37 @@
   flex-wrap: wrap;
   margin: 15px 0 25px;
   .facilitesBlock{
-    flex: 0 0 50%;
-    /* padding: 15px; */
-    border-radius: 10px;
-    display: flex;
-    gap: 12px;
-    max-width: calc(50% - 8px);
+    align-items: center;
+        border-radius: 10px;
+        display: flex;
+        gap: 12px;
+        flex-direction: column;
+        flex: 0 0 33%;
+        box-shadow: 0 0 0 #000, 0 0 20px #eeeeee;
+        padding: 10px;
+        width: 100%;
+        max-width: calc(33% - 8px);
     .facilitesIcons{
-    
-      height: 24px;
+      width: 100%;
+      text-align: center;
+      aspect-ratio: 1 / 1;
+      background: #f2f2f2;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg{
+        width: 25px;
+        height: 25px;
+      }
     }
     .facilitesHeading{
+      text-align: center;
+      h4{
+        margin: 0;
+        font-size: 16px;
+        line-height: normal;
+      }
       p{
         display: block;
         font-size: 13px;
