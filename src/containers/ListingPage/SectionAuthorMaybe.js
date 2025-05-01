@@ -58,6 +58,7 @@ const SectionAuthorMaybe = props => {
           sendInquiryError={sendInquiryError}
           onSubmit={onSubmitInquiry}
           inProgress={sendInquiryInProgress}
+          listing={listing}
         />
       </Modal>
     </section>

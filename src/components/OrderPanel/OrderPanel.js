@@ -296,6 +296,7 @@ const OrderPanel = props => {
     fetchLineItemsInProgress,
     fetchLineItemsError,
     payoutDetailsWarning,
+    setBookingData
   } = props;
 
   const publicData = listing?.attributes?.publicData || {};
@@ -494,7 +495,7 @@ const OrderPanel = props => {
             onFetchTimeSlots={onFetchTimeSlots}
             timeZone={timeZone}
             onContactUser={onContactUser}
-
+            setBookingData={setBookingData}
             {...priceVariantsMaybe}
             {...sharedProps}
           />

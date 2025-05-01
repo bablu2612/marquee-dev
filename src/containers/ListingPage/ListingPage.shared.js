@@ -141,13 +141,31 @@ export const handleContactUser = parameters => () => {
  * @param {Object} parameters all the info needed to create inquiry.
  */
 export const handleSubmitInquiry = parameters => values => {
-  const { history, params, getListing, onSendInquiry, routes, setInquiryModalOpen } = parameters;
+  const { history, params, getListing, onSendInquiry, routes, setInquiryModalOpen,bookingData } = parameters;
 
   const listingId = new UUID(params.id);
   const listing = getListing(listingId);
-  const { message } = values;
+  const { message="Hello",extra_add_on } = values;
 
-  onSendInquiry(listing, message.trim())
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  
+  // Example
+  const startDate = bookingData?.startDate;
+  const endDate = bookingData?.endDate;
+  
+  const bookingDataNew={
+    startDate: formatDate(startDate),
+    endDate: formatDate(endDate)
+  }
+
+console.log('message values',bookingData,values)
+  onSendInquiry(listing, message.trim(),extra_add_on, bookingDataNew)
     .then(txId => {
       setInquiryModalOpen(false);
 

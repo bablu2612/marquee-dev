@@ -536,6 +536,7 @@ export const BookingDatesForm = props => {
     preselectedPriceVariant,
     isPublishedListing,
     onContactUser,
+    setBookingData,
     ...rest
   } = props;
 
@@ -623,8 +624,17 @@ export const BookingDatesForm = props => {
           onFetchTimeSlots,
           form: formApi,
         } = formRenderProps;
+
         const { startDate, endDate } = values?.bookingDates ? values.bookingDates : {};
         const priceVariantName = values?.priceVariantName || null;
+
+
+        useEffect(()=>{
+          if(setBookingData){
+            setBookingData((prev)=> values?.bookingDates)
+
+          }
+        },[startDate, endDate])
 
         const startDateErrorMessage = intl.formatMessage({
           id: 'FieldDateRangeInput.invalidStartDate',
@@ -701,11 +711,18 @@ export const BookingDatesForm = props => {
 
         const isDaily = lineItemUnitType === LINE_ITEM_DAY;
         const submitDisabled = isPriceVariationsInUse && !isPublishedListing;
-const contactSellerLink = (
-    <InlineTextButton onClick={onClickContactUser}>
-      <FormattedMessage id="ProductOrderForm.finePrintNoStockLinkText" />
-    </InlineTextButton>
-  );
+        const contactSellerLink = (
+          <div className={css.submitButton}>
+          <PrimaryButton
+            type="button"
+            onClick={onClickContactUser}
+            inProgress={fetchLineItemsInProgress}
+            disabled={submitDisabled}
+          >
+            <FormattedMessage id="BookingDatesForm.inquireNow" />
+          </PrimaryButton>
+        </div>
+          );
         return (
           <Form onSubmit={handleSubmit} className={classes} enforcePagePreloadFor="CheckoutPage">
             {PriceVariantFieldComponent ? (
@@ -853,7 +870,7 @@ const contactSellerLink = (
               </span>
             ) : null}
 
-            <div className={css.submitButton}>
+            {/* <div className={css.submitButton}>
               <PrimaryButton
                 type="submit"
                 inProgress={fetchLineItemsInProgress}
@@ -861,8 +878,8 @@ const contactSellerLink = (
               >
                 <FormattedMessage id="BookingDatesForm.requestToBook" />
               </PrimaryButton>
-            </div>
-            {/* {contactSellerLink} */} 
+            </div> */}
+            {contactSellerLink} 
             {/* /bablu */}
             <p className={css.finePrint}>
               {payoutDetailsWarning ? (

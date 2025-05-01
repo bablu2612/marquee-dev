@@ -417,7 +417,7 @@ export const fetchTimeSlots = (listingId, start, end, timeZone, options) => (
   }
 };
 
-export const sendInquiry = (listing, message) => (dispatch, getState, sdk) => {
+export const sendInquiry = (listing, message,extra_add_on,bookingData) => (dispatch, getState, sdk) => {
   dispatch(sendInquiryRequest());
   const processAlias = listing?.attributes?.publicData?.transactionProcessAlias;
   if (!processAlias) {
@@ -432,11 +432,14 @@ export const sendInquiry = (listing, message) => (dispatch, getState, sdk) => {
   const listingId = listing?.id;
   const [processName, alias] = processAlias.split('/');
   const transitions = getProcess(processName)?.transitions;
-
+console.log('extra_add_on',extra_add_on,bookingData)
   const bodyParams = {
     transition: transitions.INQUIRE,
     processAlias,
-    params: { listingId },
+    params: { listingId ,protectedData: {
+      extra_add_on: extra_add_on,
+      bookingData: bookingData
+    } },
   };
   return sdk.transactions
     .initiate(bodyParams)

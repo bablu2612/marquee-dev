@@ -18,10 +18,12 @@ import {
   IconInquiry,
   Heading,
   NamedLink,
+  FieldCheckbox,
 } from '../../../components';
 
 import css from './InquiryForm.module.css';
 import { NO_ACCESS_PAGE_INITIATE_TRANSACTIONS } from '../../../util/urlHelpers';
+import { useConfiguration } from '../../../context/configurationContext';
 
 const ErrorMessage = props => {
   const { error } = props;
@@ -88,8 +90,11 @@ const InquiryForm = props => (
         listingTitle,
         authorDisplayName,
         sendInquiryError,
+        listing
       } = fieldRenderProps;
-
+      const config=useConfiguration()
+      const avaliableAddOn= config?.listing?.listingFields?.find(addon=> addon.key === "extras_availale")
+const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> listing?.attributes?.publicData?.extras_availale?.includes(data.option))
       const intl = useIntl();
       const messageLabel = intl.formatMessage(
         {
@@ -118,20 +123,55 @@ const InquiryForm = props => (
           <Heading as="h2" rootClassName={css.heading}>
             <FormattedMessage id="InquiryForm.heading" values={{ listingTitle }} />
           </Heading>
-          <FieldTextInput
+
+
+
+          <div className="modal-overlay">
+      <div className="modal-box">
+        <h2 className="modal-title">Additional Quote Options</h2>
+        <p className="modal-subtext">
+          Would you also like a quote to include the cost of:
+        </p>
+        <div className="checkbox-group">
+          {aaliableOption.map((option) => (
+              <FieldCheckbox
+                id={option.option}
+                name={"extra_add_on"}
+                label={option.label}
+                value={option.option}
+              />
+             
+          ))}
+        </div>
+        
+      </div>
+    </div>
+
+
+          {/* <FieldTextInput
             className={css.field}
             type="textarea"
             name="message"
             id={formId ? `${formId}.message` : 'message'}
             label={messageLabel}
+
             placeholder={messagePlaceholder}
             validate={messageRequired}
-          />
+          /> */}
           <div className={submitButtonWrapperClassName}>
             <ErrorMessage error={sendInquiryError} />
+            <div className='mainbuttonWrapper'>
             <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
-              <FormattedMessage id="InquiryForm.submitButtonText" />
+              {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}
+              Skip
             </PrimaryButton>
+
+            <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
+              {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}
+              Update Quote
+            </PrimaryButton>
+            </div>
+
           </div>
         </Form>
       );
