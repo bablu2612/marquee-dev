@@ -126,8 +126,8 @@ const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> listing?.attribu
 
 
 
-          <div className="modal-overlay">
-      <div className="modal-box">
+          <div className={'modal-overlay'}>
+      <div className="modal-box inqueryFormCustome">
         <h2 className="modal-title">Additional Quote Options</h2>
         <p className="modal-subtext">
           Would you also like a quote to include the cost of:
@@ -160,7 +160,7 @@ const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> listing?.attribu
           /> */}
           <div className={submitButtonWrapperClassName}>
             <ErrorMessage error={sendInquiryError} />
-            <div className='mainbuttonWrapper'>
+            <div className='mainbuttonWrapper inqueryFromBtns'>
             <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
               {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}
               Skip

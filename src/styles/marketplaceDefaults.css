@@ -1565,3 +1565,42 @@ textarea {
 
 }
 
+
+
+
+.inqueryFormCustome {
+  h2.modal-title {
+     font-size: 24px;
+     color: #000000;
+     margin: 0;
+     padding: 0;
+     line-height: normal;
+ }
+ p.modal-subtext {
+   font-size: 19px;
+   color: #000;
+ }
+ .checkbox-group {
+   span {
+     line-height: 30px;
+     display: block;
+     font-size: 18px;
+     margin-bottom: 8px;
+   }
+ }
+ 
+ 
+ }
+ .inqueryFromBtns {
+   display: flex;
+   gap: 15px;
+    button{
+      &:nth-child(2) {
+        max-width: fit-content;
+        padding: 15px;
+        background: #fff;
+        color: #cc2e2e;
+        border: 1px solid #cc2e2e;
+    }
+    }
+ }

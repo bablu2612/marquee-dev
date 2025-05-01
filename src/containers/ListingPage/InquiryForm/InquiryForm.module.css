@@ -34,7 +34,7 @@
 }
 
 
-.modal-box {
+.inqueryFormCustome {
  h2.modal-title {
     font-size: 24px;
     color: #000000;
@@ -54,7 +54,10 @@ p.modal-subtext {
     margin-bottom: 8px;
   }
 }
-.mainbuttonWrapper {
+
+
+}
+.inqueryFromBtns {
   display: flex;
   gap: 15px;
 button{
@@ -66,7 +69,5 @@ button{
     border: 1px solid #cc2e2e;
 }
 }
-}
-
 }
 
