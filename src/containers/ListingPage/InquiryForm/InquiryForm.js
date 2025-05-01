@@ -119,10 +119,10 @@ const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> listing?.attribu
 
       return (
         <Form className={classes} onSubmit={handleSubmit} enforcePagePreloadFor="OrderDetailsPage">
-          <IconInquiry className={css.icon} />
-          <Heading as="h2" rootClassName={css.heading}>
+          {/* <IconInquiry className={css.icon} /> */}
+          {/* <Heading as="h2" rootClassName={css.heading}>
             <FormattedMessage id="InquiryForm.heading" values={{ listingTitle }} />
-          </Heading>
+          </Heading> */}
 
 
 
