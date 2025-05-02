@@ -93,7 +93,7 @@ export const ListingPageComponent = props => {
     props.inquiryModalOpenForListingId === props.params.id
   );
   const [imageCarouselOpen, setImageCarouselOpen] = useState(false);
-
+  const [bookingData,setBookingData]=useState()
   const {
     isAuthenticated,
     currentUser,
@@ -240,6 +240,7 @@ export const ListingPageComponent = props => {
     getListing,
     onSendInquiry,
     setInquiryModalOpen,
+    bookingData
   });
   const onSubmit = handleSubmit({
     ...commonParams,
@@ -418,12 +419,12 @@ const facilityIcons = {
             </div>
 
 
-            <SectionMapMaybe
+            {/* <SectionMapMaybe
               geolocation={geolocation}
               publicData={publicData}
               listingId={currentListing.id}
               mapsConfig={config.maps}
-            />
+            /> */}
             <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
             <SectionAuthorMaybe
               title={title}
@@ -470,6 +471,7 @@ const facilityIcons = {
               marketplaceCurrency={config.currency}
               dayCountAvailableForBooking={config.stripe.dayCountAvailableForBooking}
               marketplaceName={config.marketplaceName}
+              setBookingData={setBookingData}
             />
           </div>
         </div>
@@ -626,7 +628,7 @@ const mapDispatchToProps = dispatch => ({
   callSetInitialValues: (setInitialValues, values, saveToSessionStorage) =>
     dispatch(setInitialValues(values, saveToSessionStorage)),
   onFetchTransactionLineItems: params => dispatch(fetchTransactionLineItems(params)), // for OrderPanel
-  onSendInquiry: (listing, message) => dispatch(sendInquiry(listing, message)),
+  onSendInquiry: (listing, message,extra_add_on, bookingDataNew) => dispatch(sendInquiry(listing, message,extra_add_on, bookingDataNew)),
   onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
   onFetchTimeSlots: (listingId, start, end, timeZone, options) =>
     dispatch(fetchTimeSlots(listingId, start, end, timeZone, options)), // for OrderPanel

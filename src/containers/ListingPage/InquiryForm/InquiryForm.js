@@ -18,10 +18,12 @@ import {
   IconInquiry,
   Heading,
   NamedLink,
+  FieldCheckbox,
 } from '../../../components';
 
 import css from './InquiryForm.module.css';
 import { NO_ACCESS_PAGE_INITIATE_TRANSACTIONS } from '../../../util/urlHelpers';
+import { useConfiguration } from '../../../context/configurationContext';
 
 const ErrorMessage = props => {
   const { error } = props;
@@ -77,6 +79,7 @@ const ErrorMessage = props => {
 const InquiryForm = props => (
   <FinalForm
     {...props}
+    initialValues={{extra_add_on: []}}
     render={fieldRenderProps => {
       const {
         rootClassName,
@@ -88,9 +91,15 @@ const InquiryForm = props => (
         listingTitle,
         authorDisplayName,
         sendInquiryError,
+        listing,
+        values
       } = fieldRenderProps;
-
+      const config=useConfiguration()
+      const avaliableAddOn= config?.listing?.listingFields?.find(addon=> addon.key === "extras_availale")
+      const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> listing?.attributes?.publicData?.extras_availale?.includes(data.option))
       const intl = useIntl();
+
+      console.log('values>>',values?.extra_add_on?.length)
       const messageLabel = intl.formatMessage(
         {
           id: 'InquiryForm.messageLabel',
@@ -114,24 +123,59 @@ const InquiryForm = props => (
 
       return (
         <Form className={classes} onSubmit={handleSubmit} enforcePagePreloadFor="OrderDetailsPage">
-          <IconInquiry className={css.icon} />
-          <Heading as="h2" rootClassName={css.heading}>
+          {/* <IconInquiry className={css.icon} /> */}
+          {/* <Heading as="h2" rootClassName={css.heading}>
             <FormattedMessage id="InquiryForm.heading" values={{ listingTitle }} />
-          </Heading>
-          <FieldTextInput
+          </Heading> */}
+
+
+
+          <div className={'modal-overlay'}>
+      <div className="modal-box inqueryFormCustome">
+        <h2 className="modal-title">Additional Quote Options</h2>
+        <p className="modal-subtext">
+          Would you also like a quote to include the cost of:
+        </p>
+        <div className="checkbox-group">
+          {aaliableOption.map((option) => (
+              <FieldCheckbox
+                id={option.option}
+                name={"extra_add_on"}
+                label={option.label}
+                value={option.option}
+              />
+             
+          ))}
+        </div>
+        
+      </div>
+    </div>
+
+
+          {/* <FieldTextInput
             className={css.field}
             type="textarea"
             name="message"
             id={formId ? `${formId}.message` : 'message'}
             label={messageLabel}
+
             placeholder={messagePlaceholder}
             validate={messageRequired}
-          />
+          /> */}
           <div className={submitButtonWrapperClassName}>
             <ErrorMessage error={sendInquiryError} />
-            <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
-              <FormattedMessage id="InquiryForm.submitButtonText" />
+            <div className='mainbuttonWrapper inqueryFromBtns'>
+            <PrimaryButton type="submit" inProgress={values?.extra_add_on?.length > 0 ? submitInProgress : false} disabled={values?.extra_add_on?.length > 0}>
+              {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}
+              Skip
             </PrimaryButton>
+
+            <PrimaryButton type="submit" inProgress={values?.extra_add_on?.length === 0 ? submitInProgress : false} disabled={values?.extra_add_on?.length === 0}>
+              {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}
+              Update Quote
+            </PrimaryButton>
+            </div>
+
           </div>
         </Form>
       );
