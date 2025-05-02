@@ -225,6 +225,10 @@ export class TransactionPanelComponent extends Component {
 
     const classes = classNames(rootClassName || css.root, className);
 
+      const avaliableAddOn= config?.listing?.listingFields?.find(addon=> addon.key === "extras_availale")
+      const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> protectedData?.extra_add_on?.includes(data.option))
+    
+    console.log('protectedData',listing?.attributes?.publicData,protectedData,aaliableOption)
     return (
       <div className={classes}>
         <div className={css.container}>
@@ -309,7 +313,22 @@ export class TransactionPanelComponent extends Component {
                 />
               </div>
             ) : null}
+          <div>
+          <h4>From Customer</h4>
+          <div><p>Start date: <b> {protectedData?.bookingData?.startDate}</b></p></div>
+          <div><p>Start date: <b>{protectedData?.bookingData?.endDate}</b></p></div>
 
+          <div className='add-ons'>
+            <h4>Add-on</h4>
+            <div>
+
+              {aaliableOption?.map(data=> {
+                return <div> <p>{data?.label} : <b>${listing?.attributes?.publicData[`pub_extras_availale_${data.option}_price`]}</b></p></div>
+              })}
+            </div>
+          </div>
+
+          </div>
             <FeedSection
               rootClassName={css.feedContainer}
               hasMessages={messages.length > 0}

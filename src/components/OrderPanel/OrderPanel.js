@@ -439,15 +439,16 @@ const OrderPanel = props => {
           marketplaceCurrency={marketplaceCurrency}
         />
 
-        <div className={css.author}>
-          <AvatarSmall user={author} className={css.providerAvatar} />
-          <span className={css.providerNameLinked}>
-            <FormattedMessage id="OrderPanel.author" values={{ name: authorLink }} />
-          </span>
-          <span className={css.providerNamePlain}>
-            <FormattedMessage id="OrderPanel.author" values={{ name: authorDisplayName }} />
-          </span>
-        </div>
+          <div className={css.author}>
+            {/* bablu */}
+            {/* <AvatarSmall user={author} className={css.providerAvatar} />
+            <span className={css.providerNameLinked}>
+              <FormattedMessage id="OrderPanel.author" values={{ name: authorLink }} />
+            </span>
+            <span className={css.providerNamePlain}>
+              <FormattedMessage id="OrderPanel.author" values={{ name: authorDisplayName }} />
+            </span> */}
+          </div>
 
         {showPriceMissing ? (
           <PriceMissing />

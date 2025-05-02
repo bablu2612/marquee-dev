@@ -717,7 +717,9 @@ export const BookingDatesForm = props => {
             type="button"
             onClick={onClickContactUser}
             inProgress={fetchLineItemsInProgress}
-            disabled={submitDisabled}
+            // disabled={submitDisabled}
+            disabled={!(startDate && endDate)}
+
           >
             <FormattedMessage id="BookingDatesForm.inquireNow" />
           </PrimaryButton>

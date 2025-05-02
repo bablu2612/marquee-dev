@@ -79,6 +79,7 @@ const ErrorMessage = props => {
 const InquiryForm = props => (
   <FinalForm
     {...props}
+    initialValues={{extra_add_on: []}}
     render={fieldRenderProps => {
       const {
         rootClassName,
@@ -90,12 +91,15 @@ const InquiryForm = props => (
         listingTitle,
         authorDisplayName,
         sendInquiryError,
-        listing
+        listing,
+        values
       } = fieldRenderProps;
       const config=useConfiguration()
       const avaliableAddOn= config?.listing?.listingFields?.find(addon=> addon.key === "extras_availale")
-const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> listing?.attributes?.publicData?.extras_availale?.includes(data.option))
+      const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> listing?.attributes?.publicData?.extras_availale?.includes(data.option))
       const intl = useIntl();
+
+      console.log('values>>',values?.extra_add_on?.length)
       const messageLabel = intl.formatMessage(
         {
           id: 'InquiryForm.messageLabel',
@@ -161,12 +165,12 @@ const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> listing?.attribu
           <div className={submitButtonWrapperClassName}>
             <ErrorMessage error={sendInquiryError} />
             <div className='mainbuttonWrapper inqueryFromBtns'>
-            <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
+            <PrimaryButton type="submit" inProgress={values?.extra_add_on?.length > 0 ? submitInProgress : false} disabled={values?.extra_add_on?.length > 0}>
               {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}
               Skip
             </PrimaryButton>
 
-            <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
+            <PrimaryButton type="submit" inProgress={values?.extra_add_on?.length === 0 ? submitInProgress : false} disabled={values?.extra_add_on?.length === 0}>
               {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}
               Update Quote
             </PrimaryButton>
