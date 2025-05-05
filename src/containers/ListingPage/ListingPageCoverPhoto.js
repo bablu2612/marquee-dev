@@ -403,6 +403,9 @@ const facilityIcons = {
            
 
             <div className={css.addOnSection}>
+            <H4 as="h1" className={css.orderPanelTitle}>
+              Available Add-ons
+              </H4>
                 {slectedAddOns?.map((data)=>{
                     const datanew= extafiles?.find((dt)=> dt?.option === data )
                     return <div className={css.facilitesBlock}>
