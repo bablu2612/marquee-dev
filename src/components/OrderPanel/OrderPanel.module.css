@@ -61,8 +61,10 @@
   margin: 0 0 0 24px;
 
   @media (--viewportMedium) {
-    margin: 0;
     padding: 0;
+    margin: 0px 0;
+        padding: 0;
+        font-size: 16px;
   }
 }
 .priceValue {
@@ -80,10 +82,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-size: 14px;
+  opacity: 0.7;
 
   @media (--viewportMedium) {
     width: 100%;
-    margin: 12px 0 36px 0;
+    margin:     0 0 15px;
     color: var(--colorGrey700);
   }
 }

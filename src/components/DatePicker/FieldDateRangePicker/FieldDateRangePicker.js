@@ -23,11 +23,12 @@ const handleChange = (parentOnChange, fieldOnChange) => value => {
   const [startDate, endDate] = value;
   // If "onChange" callback is passed through the props,
   // it can notify the parent when the content of the input has changed.
+  // bablu
   if (parentOnChange) {
-    parentOnChange({ startDate, endDate });
+    parentOnChange({ startDate, endDate: startDate });
   }
   // Notify Final Form that the input has changed.
-  fieldOnChange({ startDate, endDate });
+  fieldOnChange({ startDate, endDate: startDate });
 };
 
 const FieldDateRangePickerComponent = props => {
@@ -93,7 +94,7 @@ const FieldDateRangePickerComponent = props => {
             {startDateLabel}
           </label>
           <label
-            className={classNames(css.endDateLabel, { [css.labelDisabled]: showLabelAsDisabled })}
+            className={classNames(css.endDateLabel,"endate-hide", { [css.labelDisabled]: showLabelAsDisabled })}
             htmlFor={endDateId}
           >
             {endDateLabel}

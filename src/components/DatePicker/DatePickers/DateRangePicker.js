@@ -239,7 +239,7 @@ export const DateRangePicker = props => {
             />
             <input
               id={endDateId}
-              className={inputClasses}
+              className={`${inputClasses} endate-hide`}
               placeholder={endDatePlaceholderText}
               value={dateRangeData.formatted[1] || ''}
               data-type={INPUT_END}
