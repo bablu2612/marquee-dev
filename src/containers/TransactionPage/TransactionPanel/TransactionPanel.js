@@ -26,6 +26,7 @@ import DiminishedActionButtonMaybe from './DiminishedActionButtonMaybe';
 import PanelHeading from './PanelHeading';
 
 import css from './TransactionPanel.module.css';
+import { apiBaseUrl } from '../../../util/api';
 
 // Helper function to get display names for different roles
 const displayNames = (currentUser, provider, customer, intl) => {
@@ -91,6 +92,7 @@ export class TransactionPanelComponent extends Component {
     super(props);
     this.state = {
       sendMessageFormFocused: false,
+      isLoading: false
     };
     this.isMobSaf = false;
     this.sendMessageFormName = 'TransactionPanel.SendMessageForm';
@@ -117,21 +119,49 @@ export class TransactionPanelComponent extends Component {
     this.setState({ sendMessageFormFocused: false });
   }
 
-  onMessageSubmit(values, form) {
+  sendMessage(reset = false) {
+
+  }
+
+  onMessageSubmit(values, form, fileObject) {
     const message = values.message ? values.message.trim() : null;
     const { transactionId, onSendMessage, config } = this.props;
 
-    if (!message) {
+    if (!message && !file) {
       return;
     }
-    onSendMessage(transactionId, message, config)
-      .then(messageId => {
-        form.reset();
-        this.scrollToMessage(messageId);
-      })
-      .catch(e => {
-        // Ignore, Redux handles the error
-      });
+    this.setState({ isLoading: true });
+    if (fileObject?.file) {
+      const formdata = new FormData();
+      formdata.append("file", fileObject?.file, fileObject?.file.name);
+      const requestOptions = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow"
+      };
+
+      fetch(`${apiBaseUrl()}/api/upload-file`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          onSendMessage(transactionId, result?.url, config).then((e) => {
+            fileObject?.removeFile();
+            if (!message) {
+              this.setState({ isLoading: false });
+            }
+          }).catch(e => this.setState({ isLoading: false }));
+        }).catch((error) => console.error(error));
+    }
+
+    if (message) {
+      onSendMessage(transactionId, message, config)
+        .then(messageId => {
+          form.reset();
+          this.scrollToMessage(messageId);
+          if (!file) {
+            this.setState({ isLoading: false });
+          }
+        }).catch(e => this.setState({ isLoading: false }));
+    }
   }
 
   scrollToMessage(messageId) {
@@ -225,10 +255,10 @@ export class TransactionPanelComponent extends Component {
 
     const classes = classNames(rootClassName || css.root, className);
 
-      const avaliableAddOn= config?.listing?.listingFields?.find(addon=> addon.key === "extras_availale")
-      const aaliableOption=avaliableAddOn?.enumOptions?.filter(data=> protectedData?.extra_add_on?.includes(data.option))
-    
-    console.log('protectedData',listing?.attributes?.publicData,protectedData,aaliableOption)
+    const avaliableAddOn = config?.listing?.listingFields?.find(addon => addon.key === "extras_availale")
+    const aaliableOption = avaliableAddOn?.enumOptions?.filter(data => protectedData?.extra_add_on?.includes(data.option))
+
+    console.log('protectedData', listing?.attributes?.publicData, protectedData, aaliableOption)
     return (
       <div className={classes}>
         <div className={css.container}>
@@ -313,22 +343,22 @@ export class TransactionPanelComponent extends Component {
                 />
               </div>
             ) : null}
-          <div>
-          <h4>From Customer</h4>
-          <div><p>Start date: <b> {protectedData?.bookingData?.startDate}</b></p></div>
-          <div><p>Start date: <b>{protectedData?.bookingData?.endDate}</b></p></div>
-
-          <div className='add-ons'>
-            <h4>Add-on</h4>
             <div>
+              <h4>From Customer</h4>
+              <div><p>Start date: <b> {protectedData?.bookingData?.startDate}</b></p></div>
+              <div><p>Start date: <b>{protectedData?.bookingData?.endDate}</b></p></div>
 
-              {aaliableOption?.map(data=> {
-                return <div> <p>{data?.label} : <b>${listing?.attributes?.publicData[`pub_extras_availale_${data.option}_price`]}</b></p></div>
-              })}
+              <div className='add-ons'>
+                <h4>Add-on</h4>
+                <div>
+
+                  {aaliableOption?.map(data => {
+                    return <div> <p>{data?.label} : <b>${listing?.attributes?.publicData[`pub_extras_availale_${data.option}_price`]}</b></p></div>
+                  })}
+                </div>
+              </div>
+
             </div>
-          </div>
-
-          </div>
             <FeedSection
               rootClassName={css.feedContainer}
               hasMessages={messages.length > 0}
@@ -346,7 +376,7 @@ export class TransactionPanelComponent extends Component {
                   { id: 'TransactionPanel.sendMessagePlaceholder' },
                   { name: otherUserDisplayNameString }
                 )}
-                inProgress={sendMessageInProgress}
+                inProgress={sendMessageInProgress || this.state.isLoading}
                 sendMessageError={sendMessageError}
                 onFocus={this.onSendMessageFormFocus}
                 onBlur={this.onSendMessageFormBlur}

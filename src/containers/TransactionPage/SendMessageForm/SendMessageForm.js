@@ -9,6 +9,7 @@ import { propTypes } from '../../../util/types';
 import { Form, FieldTextInput, SecondaryButtonInline } from '../../../components';
 
 import css from './SendMessageForm.module.css';
+import { CloudUpload, X } from 'lucide-react';
 
 const BLUR_TIMEOUT_MS = 100;
 
@@ -50,9 +51,16 @@ const IconSendMessage = () => {
 class SendMessageFormComponent extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      file: null
+    }
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.blurTimeoutId = null;
+    this.fileInputRef = React.createRef(null);
+    this.handleFileChange = this.handleFileChange.bind(this);
+    this.triggerFileInput = this.triggerFileInput.bind(this);
+    this.removeFile = this.removeFile.bind(this);
   }
 
   handleFocus() {
@@ -74,10 +82,31 @@ class SendMessageFormComponent extends Component {
     }, BLUR_TIMEOUT_MS);
   }
 
+  handleFileChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Selected file:', file.name);
+      // Add upload logic here
+      this.setState({ file: file })
+    }
+  };
+
+  triggerFileInput = () => {
+    if (this.fileInputRef.current) {
+      this.fileInputRef.current.click();
+    }
+  };
+
+  removeFile() {
+    this.setState({ file: null });
+  }
+
   render() {
+
     return (
       <FinalForm
         {...this.props}
+        onSubmit={(values, form) => this.props.onSubmit(values, form, { file: this.state.file, removeFile: () => this.removeFile() })}
         render={formRenderProps => {
           const {
             rootClassName,
@@ -95,36 +124,60 @@ class SendMessageFormComponent extends Component {
           const submitInProgress = inProgress;
           const submitDisabled = invalid || submitInProgress;
           return (
-            <Form className={classes} onSubmit={values => handleSubmit(values, form)}>
-              <FieldTextInput
-                inputRootClass={css.textarea}
-                type="textarea"
-                id={formId ? `${formId}.message` : 'message'}
-                name="message"
-                placeholder={messagePlaceholder}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
-              />
-              <div className={css.submitContainer}>
-                <div className={css.errorContainer}>
-                  {sendMessageError ? (
-                    <p className={css.error}>
-                      <FormattedMessage id="SendMessageForm.sendFailed" />
-                    </p>
-                  ) : null}
-                </div>
-                <SecondaryButtonInline
-                  className={css.submitButton}
-                  inProgress={submitInProgress}
-                  disabled={submitDisabled}
+            <>
+              <Form className={classes} onSubmit={values => handleSubmit(values, form, this.state.file)} enctype="multipart/form-data">
+                {this.state.file &&
+                  <div className={css.SelectedFile}>
+                    <p className={css.Filename}>{this.state.file?.name}</p>
+                    <X className={css.closeIcon} onClick={() => this.removeFile()} />
+                  </div>
+                }
+                <FieldTextInput
+                  inputRootClass={css.textarea}
+                  type="textarea"
+                  id={formId ? `${formId}.message` : 'message'}
+                  name="message"
+                  placeholder={messagePlaceholder}
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
-                >
-                  <IconSendMessage />
-                  <FormattedMessage id="SendMessageForm.sendMessage" />
-                </SecondaryButtonInline>
-              </div>
-            </Form>
+                />
+                <div className={css.submitContainer}>
+                  <div className={css.errorContainer}>
+                    {sendMessageError ? (
+                      <p className={css.error}>
+                        <FormattedMessage id="SendMessageForm.sendFailed" />
+                      </p>
+                    ) : null}
+                  </div>
+                  <SecondaryButtonInline
+                    className={css.submitButton}
+                    inProgress={submitInProgress}
+                    disabled={submitDisabled}
+                    onFocus={this.handleFocus}
+                    onBlur={this.handleBlur}
+                  >
+                    <IconSendMessage />
+                    <FormattedMessage id="SendMessageForm.sendMessage" />
+                  </SecondaryButtonInline>
+                  <div className={css.uploadContainer}>
+                    <SecondaryButtonInline
+                      type="button"
+                      className={css.uplopadButton}
+                      onClick={this.triggerFileInput}
+                    >
+                      <CloudUpload />
+                    </SecondaryButtonInline>
+                    <input
+                      type="file"
+                      accept="image/*,.pdf,video/*"
+                      ref={this.fileInputRef}
+                      onChange={this.handleFileChange}
+                      className={css.hiddenInput}
+                    />
+                  </div>
+                </div>
+              </Form>
+            </>
           );
         }}
       />

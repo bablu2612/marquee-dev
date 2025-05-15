@@ -19,6 +19,7 @@ import { Avatar, InlineTextButton, ReviewRating, UserDisplayName } from '../../.
 import { stateDataShape } from '../TransactionPage.stateData';
 
 import css from './ActivityFeed.module.css';
+import { Download } from 'lucide-react';
 
 const MIN_LENGTH_FOR_LONG_WORDS = 20;
 
@@ -31,12 +32,15 @@ const MIN_LENGTH_FOR_LONG_WORDS = 20;
  */
 const Message = props => {
   const { message, formattedDate } = props;
-  const content = richText(message.attributes.content, {
-    linkify: true,
-    longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
-    longWordClass: css.longWord,
-  });
-
+  if (assingSvgToFiles(message.attributes.content)) {
+    content = assingSvgToFiles(message.attributes.content);
+  } else {
+    const content = richText(message.attributes.content, {
+      linkify: true,
+      longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
+      longWordClass: css.longWord,
+    });
+  }
   return (
     <div className={css.message}>
       <Avatar className={css.avatar} user={message.sender} />
@@ -48,6 +52,52 @@ const Message = props => {
   );
 };
 
+
+const downloadFile = (fileUrl, type) => {
+  fetch(fileUrl)
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `download${type}`; // Desired file name
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(err => console.error('Download failed', err));
+}
+
+const assingSvgToFiles = (content) => {
+  const isImage = ['.jpg', '.jpeg', '.png']?.find((r) => content?.includes(r));
+  const isPdf = content?.includes('.pdf');
+  const isVedio = ['.mp4', '.mov']?.find((r) => content?.includes(r));
+
+  if (isImage || isPdf || isVedio) {
+    let svg = "";
+    let Type = ""
+    if (isPdf) {
+      svg = "/static/icons/PDF_file_iconSvg.png";
+      Type = ".pdf"
+    } else if (isVedio) {
+      svg = "/static/icons/PDF_file_iconSvg.png"
+      Type = isVedio
+    } else {
+      svg = content
+      Type = isImage;
+    }
+    return (
+      <a onClick={() => downloadFile(content, Type)} className={css.mainAnchorTag} download="file.png">
+        <img className={css.imageStyle} src={svg} width={"100%"} height="100px" />
+        <Download />
+      </a>
+    );
+  }
+
+  return null;
+}
+
 /**
  * @component
  * @param {Object} props - The props
@@ -57,12 +107,18 @@ const Message = props => {
  */
 const OwnMessage = props => {
   const { message, formattedDate } = props;
-  const content = richText(message.attributes.content, {
-    linkify: true,
-    linkClass: css.ownMessageContentLink,
-    longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
-    longWordClass: css.longWord,
-  });
+  let content = "";
+  if (assingSvgToFiles(message.attributes.content)) {
+    content = assingSvgToFiles(message.attributes.content);
+  } else {
+    content = richText(message.attributes.content, {
+      linkify: true,
+      linkClass: css.ownMessageContentLink,
+      longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
+      longWordClass: css.longWord,
+    });
+  }
+
 
   return (
     <div className={css.ownMessage}>
@@ -117,8 +173,8 @@ const TransitionMessage = props => {
     transition.by === ownRole
       ? 'you'
       : [TX_TRANSITION_ACTOR_SYSTEM, TX_TRANSITION_ACTOR_OPERATOR].includes(transition.by)
-      ? transition.by
-      : otherUsersName;
+        ? transition.by
+        : otherUsersName;
 
   const reviewLink = showReviewAsFirstLink ? (
     <InlineTextButton onClick={onOpenReviewModal}>
@@ -287,8 +343,8 @@ export const ActivityFeed = props => {
       const reviewEntity = isCustomerReview
         ? reviewByAuthorId(transaction, customer.id)
         : isProviderRieview
-        ? reviewByAuthorId(transaction, provider.id)
-        : null;
+          ? reviewByAuthorId(transaction, provider.id)
+          : null;
 
       const listingTitle = listing.attributes.deleted
         ? intl.formatMessage({ id: 'TransactionPage.ActivityFeed.deletedListing' })

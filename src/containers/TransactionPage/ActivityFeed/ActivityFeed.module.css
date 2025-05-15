@@ -20,6 +20,35 @@
   }
 }
 
+.mainAnchorTag {
+  /* position: relative; */
+
+  svg {
+    /* position: absolute;
+    border: 1px solid #ffffff;
+    top: -30%;
+    left: 42%;
+    width: 30px;
+    height: 30px;
+    padding: 6px; */
+
+    position: absolute;
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 6px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .imageStyle {
+    opacity: 0.6;
+  }
+}
+
 .message,
 .ownMessage {
   /* Preserve newlines, but collapse other whitespace */
@@ -71,10 +100,12 @@
 }
 
 .ownMessageContent {
+  position: relative;
   background-color: var(--marketplaceColor);
   color: var(--colorWhite);
   float: right;
 }
+
 .ownMessageContentLink {
   color: var(--colorWhite);
   text-decoration: underline;
@@ -186,5 +217,4 @@
   }
 }
 
-.showOlderButton {
-}
+.showOlderButton {}

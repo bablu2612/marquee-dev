@@ -463,8 +463,8 @@ const fetchMonthlyTimeSlots = (dispatch, listing) => {
     const timeUnit = startTimeInterval
       ? bookingTimeUnits[startTimeInterval]?.timeUnit
       : unitType === 'hour'
-      ? 'hour'
-      : 'day';
+        ? 'hour'
+        : 'day';
     const nextBoundary = findNextBoundary(now, 1, timeUnit, tz);
 
     const nextMonth = getStartOf(nextBoundary, 'month', tz, 1, 'months');
@@ -487,15 +487,15 @@ const fetchMonthlyTimeSlots = (dispatch, listing) => {
     const options = intervalAlign => {
       return ['fixed', 'hour'].includes(unitType)
         ? {
-            extraQueryParams: {
-              intervalDuration: 'P1D',
-              intervalAlign,
-              maxPerInterval: 1,
-              minDurationStartingInInterval,
-              perPage: 31,
-              page: 1,
-            },
-          }
+          extraQueryParams: {
+            intervalDuration: 'P1D',
+            intervalAlign,
+            maxPerInterval: 1,
+            minDurationStartingInInterval,
+            perPage: 31,
+            page: 1,
+          },
+        }
         : null;
     };
 
@@ -779,6 +779,7 @@ export const sendMessage = (txId, message, config) => (dispatch, getState, sdk) 
       throw e;
     });
 };
+
 
 // If other party has already sent a review, we need to make transition to
 // transitions.REVIEW_2_BY_<CUSTOMER/PROVIDER>
