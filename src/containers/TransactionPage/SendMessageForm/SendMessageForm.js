@@ -10,6 +10,7 @@ import { Form, FieldTextInput, SecondaryButtonInline } from '../../../components
 
 import css from './SendMessageForm.module.css';
 import { CloudUpload, X } from 'lucide-react';
+import PriceGenratePopUp from './PriceGenratePopUp';
 
 const BLUR_TIMEOUT_MS = 100;
 
@@ -52,7 +53,9 @@ class SendMessageFormComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null
+      file: null,
+      error: "",
+      openPricePopUp: false
     }
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
@@ -61,6 +64,7 @@ class SendMessageFormComponent extends Component {
     this.handleFileChange = this.handleFileChange.bind(this);
     this.triggerFileInput = this.triggerFileInput.bind(this);
     this.removeFile = this.removeFile.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
 
   handleFocus() {
@@ -101,12 +105,21 @@ class SendMessageFormComponent extends Component {
     this.setState({ file: null });
   }
 
+  handleError(errorMsg) {
+    if (errorMsg) {
+      this.setState({ error: errorMsg });
+      setTimeout(() => {
+        this.setState({ error: '' });
+      }, 3000)
+    }
+  }
+
   render() {
 
     return (
       <FinalForm
         {...this.props}
-        onSubmit={(values, form) => this.props.onSubmit(values, form, { file: this.state.file, removeFile: () => this.removeFile() })}
+        onSubmit={(values, form) => this.props.onSubmit(values, form, { file: this.state.file, removeFile: () => this.removeFile() }, (msg) => this.handleError(msg))}
         render={formRenderProps => {
           const {
             rootClassName,
@@ -132,51 +145,60 @@ class SendMessageFormComponent extends Component {
                     <X className={css.closeIcon} onClick={() => this.removeFile()} />
                   </div>
                 }
-                <FieldTextInput
-                  inputRootClass={css.textarea}
-                  type="textarea"
-                  id={formId ? `${formId}.message` : 'message'}
-                  name="message"
-                  placeholder={messagePlaceholder}
-                  onFocus={this.handleFocus}
-                  onBlur={this.handleBlur}
-                />
-                <div className={css.submitContainer}>
-                  <div className={css.errorContainer}>
-                    {sendMessageError ? (
+                <div>
+                  <FieldTextInput
+                    inputRootClass={css.textarea}
+                    type="textarea"
+                    id={formId ? `${formId}.message` : 'message'}
+                    name="message"
+                    placeholder={messagePlaceholder}
+                    onFocus={this.handleFocus}
+                    onBlur={this.handleBlur}
+                  />
+                  {this.state.error && <p className={css.errorStyle}>{this.state.error}</p>}
+                  {sendMessageError ? (
+                    <div className={css.errorContainer}>
                       <p className={css.error}>
                         <FormattedMessage id="SendMessageForm.sendFailed" />
                       </p>
-                    ) : null}
-                  </div>
-                  <SecondaryButtonInline
-                    className={css.submitButton}
-                    inProgress={submitInProgress}
-                    disabled={submitDisabled}
-                    onFocus={this.handleFocus}
-                    onBlur={this.handleBlur}
-                  >
-                    <IconSendMessage />
-                    <FormattedMessage id="SendMessageForm.sendMessage" />
+                    </div>
+                  ) : null}
+                </div>
+                <div className={css.submitContainer}>
+                  <SecondaryButtonInline className={css.submitButton} onClick={() => this.setState({ openPricePopUp: true })}>
+                    Generate Price
                   </SecondaryButtonInline>
-                  <div className={css.uploadContainer}>
+                  <div className={css.sendButtons}>
                     <SecondaryButtonInline
-                      type="button"
-                      className={css.uplopadButton}
-                      onClick={this.triggerFileInput}
+                      className={css.submitButton}
+                      inProgress={submitInProgress}
+                      disabled={submitDisabled}
+                      onFocus={this.handleFocus}
+                      onBlur={this.handleBlur}
                     >
-                      <CloudUpload />
+                      <IconSendMessage />
+                      <FormattedMessage id="SendMessageForm.sendMessage" />
                     </SecondaryButtonInline>
-                    <input
-                      type="file"
-                      accept="image/*,.pdf,video/*"
-                      ref={this.fileInputRef}
-                      onChange={this.handleFileChange}
-                      className={css.hiddenInput}
-                    />
+                    <div className={css.uploadContainer}>
+                      <SecondaryButtonInline
+                        type="button"
+                        className={css.uplopadButton}
+                        onClick={this.triggerFileInput}
+                      >
+                        <CloudUpload />
+                      </SecondaryButtonInline>
+                      <input
+                        type="file"
+                        accept="image/*,.pdf,video/*"
+                        ref={this.fileInputRef}
+                        onChange={this.handleFileChange}
+                        className={css.hiddenInput}
+                      />
+                    </div>
                   </div>
                 </div>
               </Form>
+              <PriceGenratePopUp open={this.state.openPricePopUp} onClose={() => this.setState({ openPricePopUp: false })} />
             </>
           );
         }}

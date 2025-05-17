@@ -27,6 +27,8 @@ import PanelHeading from './PanelHeading';
 
 import css from './TransactionPanel.module.css';
 import { apiBaseUrl } from '../../../util/api';
+import { sendMessageError } from '../TransactionPage.duck';
+import { connect, useDispatch } from 'react-redux';
 
 // Helper function to get display names for different roles
 const displayNames = (currentUser, provider, customer, intl) => {
@@ -123,11 +125,11 @@ export class TransactionPanelComponent extends Component {
 
   }
 
-  onMessageSubmit(values, form, fileObject) {
+  onMessageSubmit(values, form, fileObject, callback = null) {
     const message = values.message ? values.message.trim() : null;
     const { transactionId, onSendMessage, config } = this.props;
 
-    if (!message && !file) {
+    if (!message && !fileObject?.file) {
       return;
     }
     this.setState({ isLoading: true });
@@ -153,6 +155,21 @@ export class TransactionPanelComponent extends Component {
     }
 
     if (message) {
+      const emailRegex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+      const urlRegex = /\bhttps?:\/\/[^\s/$.?#].[^\s]*\b|www\.[^\s]+\.[^\s]{2,}/i;
+      const phoneRegex = /\b(\+?\d{1,3}[\s.-]?)?(\(?\d{2,4}\)?[\s.-]?)?\d{3,4}[\s.-]?\d{4}\b/;
+
+      if (emailRegex.test(message) || urlRegex.test(message) || phoneRegex.test(message)) {
+        this.setState({ isLoading: false });
+        if (callback) callback("Sending emails, URLs or phone numbers is not allowed.");
+
+        return;
+      } else {
+        if (callback) callback("");
+        console.log("Sending message:", message);
+        // Add your send message logic here
+        // setMessage("");
+      }
       onSendMessage(transactionId, message, config)
         .then(messageId => {
           form.reset();

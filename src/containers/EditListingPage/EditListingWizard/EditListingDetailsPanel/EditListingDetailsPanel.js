@@ -183,21 +183,21 @@ const setNoAvailabilityForUnbookableListings = processAlias => {
   return isBookingProcessAlias(processAlias)
     ? {}
     : {
-        availabilityPlan: {
-          type: 'availability-plan/time',
-          timezone: 'Etc/UTC',
-          entries: [
-            // Note: "no entries" is the same as seats=0 for every entry.
-            // { dayOfWeek: 'mon', startTime: '00:00', endTime: '00:00', seats: 0 },
-            // { dayOfWeek: 'tue', startTime: '00:00', endTime: '00:00', seats: 0 },
-            // { dayOfWeek: 'wed', startTime: '00:00', endTime: '00:00', seats: 0 },
-            // { dayOfWeek: 'thu', startTime: '00:00', endTime: '00:00', seats: 0 },
-            // { dayOfWeek: 'fri', startTime: '00:00', endTime: '00:00', seats: 0 },
-            // { dayOfWeek: 'sat', startTime: '00:00', endTime: '00:00', seats: 0 },
-            // { dayOfWeek: 'sun', startTime: '00:00', endTime: '00:00', seats: 0 },
-          ],
-        },
-      };
+      availabilityPlan: {
+        type: 'availability-plan/time',
+        timezone: 'Etc/UTC',
+        entries: [
+          // Note: "no entries" is the same as seats=0 for every entry.
+          // { dayOfWeek: 'mon', startTime: '00:00', endTime: '00:00', seats: 0 },
+          // { dayOfWeek: 'tue', startTime: '00:00', endTime: '00:00', seats: 0 },
+          // { dayOfWeek: 'wed', startTime: '00:00', endTime: '00:00', seats: 0 },
+          // { dayOfWeek: 'thu', startTime: '00:00', endTime: '00:00', seats: 0 },
+          // { dayOfWeek: 'fri', startTime: '00:00', endTime: '00:00', seats: 0 },
+          // { dayOfWeek: 'sat', startTime: '00:00', endTime: '00:00', seats: 0 },
+          // { dayOfWeek: 'sun', startTime: '00:00', endTime: '00:00', seats: 0 },
+        ],
+      },
+    };
 };
 
 /**
@@ -234,7 +234,7 @@ const getInitialValues = (
     pub_extras_availale_heating_price,
     pub_extras_availale_lighting_price,
     pub_extras_availale_lining_drapes_price
-                }=publicData
+  } = publicData
   // Initial values for the form
   return {
     title,
@@ -303,6 +303,10 @@ const EditListingDetailsPanel = props => {
     config,
   } = props;
 
+
+  // const userType = currentUser?.attributes?.profile?.publicData?.userType;
+  // console.log(userType, 'userType')
+
   const classes = classNames(rootClassName || css.root, className);
   const { publicData, state } = listing?.attributes || {};
   const listingTypes = config.listing.listingTypes;
@@ -366,16 +370,16 @@ const EditListingDetailsPanel = props => {
             } = values;
 
             const {
-pub_extras_availale_bar_price,
-pub_extras_availale_dancefloor_price,
-pub_extras_availale_flooring_price,
-pub_extras_availale_furniture_price,
-pub_extras_availale_generator_price,
-pub_extras_availale_heating_price,
-pub_extras_availale_lighting_price,
-pub_extras_availale_lining_drapes_price
-            }=values
-console.log('values',values)
+              pub_extras_availale_bar_price,
+              pub_extras_availale_dancefloor_price,
+              pub_extras_availale_flooring_price,
+              pub_extras_availale_furniture_price,
+              pub_extras_availale_generator_price,
+              pub_extras_availale_heating_price,
+              pub_extras_availale_lighting_price,
+              pub_extras_availale_lining_drapes_price
+            } = values
+            console.log('values', values)
             const nestedCategories = pickCategoryFields(rest, categoryKey, 1, listingCategories);
             // Remove old categories by explicitly saving null for them.
             const cleanedNestedCategories = {
@@ -409,7 +413,7 @@ console.log('values',values)
               pub_extras_availale_lighting_price,
               pub_extras_availale_lining_drapes_price
             };
-            
+
             const filteredExtras = Object.fromEntries(
               Object.entries(extras).filter(([_, value]) => value !== undefined && value !== null)
             );

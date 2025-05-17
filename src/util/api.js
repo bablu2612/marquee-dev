@@ -131,7 +131,9 @@ export const initiatePrivileged = body => {
 export const transitionPrivileged = body => {
   return post('/api/transition-privileged', body);
 };
-
+export const creatContractApi = body => {
+  return post('/api/update-tranaction-metadata', body);
+}
 // Create user with identity provider (e.g. Facebook or Google)
 //
 // If loginWithIdp api call fails and user can't authenticate to Marketplace API with idp

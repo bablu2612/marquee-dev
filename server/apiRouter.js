@@ -15,8 +15,9 @@ const loginAs = require('./api/login-as');
 const transactionLineItems = require('./api/transaction-line-items');
 const initiatePrivileged = require('./api/initiate-privileged');
 const transitionPrivileged = require('./api/transition-privileged');
-const uploadFileToS3=require('./api/upload-file-s3');
+const uploadFileToS3 = require('./api/upload-file-s3');
 const createUserWithIdp = require('./api/auth/createUserWithIdp');
+const updatetranactionMetadata = require('./api/update-contract-meta');
 
 const { authenticateFacebook, authenticateFacebookCallback } = require('./api/auth/facebook');
 const { authenticateGoogle, authenticateGoogleCallback } = require('./api/auth/google');
@@ -61,13 +62,14 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 
-router.post('/upload-file',  upload.single('file'), uploadFileToS3);
+router.post('/upload-file', upload.single('file'), uploadFileToS3);
 
 
 // Create user with identity provider (e.g. Facebook or Google)
 // This endpoint is called to create a new user after user has confirmed
 // they want to continue with the data fetched from IdP (e.g. name and email)
 router.post('/auth/create-user-with-idp', createUserWithIdp);
+router.post('/update-tranaction-metadata', updatetranactionMetadata);
 
 // Facebook authentication endpoints
 

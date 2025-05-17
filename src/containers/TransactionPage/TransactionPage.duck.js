@@ -345,7 +345,7 @@ const fetchMessagesError = e => ({ type: FETCH_MESSAGES_ERROR, error: true, payl
 
 const sendMessageRequest = () => ({ type: SEND_MESSAGE_REQUEST });
 const sendMessageSuccess = () => ({ type: SEND_MESSAGE_SUCCESS });
-const sendMessageError = e => ({ type: SEND_MESSAGE_ERROR, error: true, payload: e });
+export const sendMessageError = e => ({ type: SEND_MESSAGE_ERROR, error: true, payload: e });
 
 const sendReviewRequest = () => ({ type: SEND_REVIEW_REQUEST });
 const sendReviewSuccess = () => ({ type: SEND_REVIEW_SUCCESS });

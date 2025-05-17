@@ -32,10 +32,11 @@ const MIN_LENGTH_FOR_LONG_WORDS = 20;
  */
 const Message = props => {
   const { message, formattedDate } = props;
+  let content = null;
   if (assingSvgToFiles(message.attributes.content)) {
     content = assingSvgToFiles(message.attributes.content);
   } else {
-    const content = richText(message.attributes.content, {
+    content = richText(message.attributes.content, {
       linkify: true,
       longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
       longWordClass: css.longWord,
