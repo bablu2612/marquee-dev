@@ -69,7 +69,6 @@
   margin: -3px 5px 0 0;
 }
 
-
 .uploadContainer {
   display: flex;
   align-items: center;
@@ -134,4 +133,31 @@ svg {
   padding: 0;
   margin-top: 10px;
   text-align: center;
+}
+
+.generatedPriceContainer {
+  margin: 0 auto;
+  width: fit-content;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  gap: 18px;
+  border: 1px solid var(--marketplaceColorDark);
+  padding: 8px;
+  margin-bottom: 22px;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--marketplaceColor);
+  .priceToPayNow, .priceToPayLater {
+    display: flex;
+    justify-content: space-between;
+    gap: 108px;
+    label {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    span {
+      font-size: 14px;
+    }
+  }
 }

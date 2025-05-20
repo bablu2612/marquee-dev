@@ -5,15 +5,26 @@ const {
   handleError,
   serialize,
   fetchCommission,
+  getIntegrationSdk
 } = require('../api-util/sdk');
 
-module.exports = (req, res) => {
-  const { isSpeculative, orderData, bodyParams, queryParams } = req.body;
+module.exports = async (req, res) => {
+  const { isSpeculative, orderData, bodyParams, queryParams, transactionId } = req.body;
 
   const sdk = getSdk(req, res);
   let lineItems = null;
 
   const listingPromise = () => sdk.listings.show({ id: bodyParams?.params?.listingId });
+
+  const integrationSdk = getIntegrationSdk();
+
+  const transactionResponse = await integrationSdk.transactions.show({
+    id: transactionId?.uuid
+  })
+
+  const transaction = transactionResponse?.data?.data;
+  const price = transaction?.attributes?.metadata?.profit
+
 
   Promise.all([listingPromise(), fetchCommission(sdk)])
     .then(([showListingResponse, fetchAssetsResponse]) => {
@@ -27,7 +38,8 @@ module.exports = (req, res) => {
         listing,
         { ...orderData, ...bodyParams.params },
         providerCommission,
-        customerCommission
+        customerCommission,
+        price
       );
 
       return getTrustedSdk(req);

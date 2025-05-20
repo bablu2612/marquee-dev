@@ -461,6 +461,7 @@ export const TransactionPageComponent = props => {
   // that currently handles showing everything inside layout's main view area.
   const panel = isDataAvailable ? (
     <TransactionPanel
+      transaction={transaction}
       className={detailsClassName}
       currentUser={currentUser}
       transactionId={transaction?.id}
@@ -482,6 +483,7 @@ export const TransactionPageComponent = props => {
       transactionRole={transactionRole}
       showBookingLocation={showBookingLocation}
       hasViewingRights={hasViewingRights}
+      handleSubmitOrderRequest={handleSubmitOrderRequest}
       activityFeed={
         <ActivityFeed
           messages={messages}

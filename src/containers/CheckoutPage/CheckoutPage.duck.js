@@ -247,7 +247,7 @@ export const initiateOrder = (
 
   if (isTransition && isPrivilegedTransition) {
     // transition privileged
-    return transitionPrivileged({ isSpeculative: false, orderData, bodyParams, queryParams })
+    return transitionPrivileged({ isSpeculative: false, orderData, bodyParams, queryParams, transactionId })
       .then(handleSuccess)
       .catch(handleError);
   } else if (isTransition) {
@@ -460,7 +460,7 @@ export const speculateTransaction = (
 
   if (isTransition && isPrivilegedTransition) {
     // transition privileged
-    return transitionPrivileged({ isSpeculative: true, orderData, bodyParams, queryParams })
+    return transitionPrivileged({ isSpeculative: true, orderData, bodyParams, queryParams, transactionId })
       .then(handleSuccess)
       .catch(handleError);
   } else if (isTransition) {

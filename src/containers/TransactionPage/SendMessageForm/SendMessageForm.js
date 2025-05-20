@@ -11,6 +11,7 @@ import { Form, FieldTextInput, SecondaryButtonInline } from '../../../components
 import css from './SendMessageForm.module.css';
 import { CloudUpload, X } from 'lucide-react';
 import PriceGenratePopUp from './PriceGenratePopUp';
+import moment from 'moment';
 
 const BLUR_TIMEOUT_MS = 100;
 
@@ -54,9 +55,9 @@ class SendMessageFormComponent extends Component {
     super(props);
     this.state = {
       file: null,
-      error: "",
-      openPricePopUp: false
-    }
+      error: '',
+      openPricePopUp: false,
+    };
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.blurTimeoutId = null;
@@ -65,6 +66,7 @@ class SendMessageFormComponent extends Component {
     this.triggerFileInput = this.triggerFileInput.bind(this);
     this.removeFile = this.removeFile.bind(this);
     this.handleError = this.handleError.bind(this);
+    this.handleCheckout = this.handleCheckout.bind(this);
   }
 
   handleFocus() {
@@ -91,9 +93,9 @@ class SendMessageFormComponent extends Component {
     if (file) {
       console.log('Selected file:', file.name);
       // Add upload logic here
-      this.setState({ file: file })
+      this.setState({ file: file });
     }
-  };
+  }
 
   triggerFileInput = () => {
     if (this.fileInputRef.current) {
@@ -110,16 +112,40 @@ class SendMessageFormComponent extends Component {
       this.setState({ error: errorMsg });
       setTimeout(() => {
         this.setState({ error: '' });
-      }, 3000)
+      }, 3000);
+    }
+  }
+
+  handleCheckout() {
+    const { handleSubmitOrderRequest, transaction } = this.props;
+    if (handleSubmitOrderRequest && transaction) {
+      handleSubmitOrderRequest({
+        bookingDates: {
+          startDate: moment(
+            transaction?.attributes?.protectedData?.bookingData?.startDate
+          ).toISOString(),
+          endDate: moment(
+            transaction?.attributes?.protectedData?.bookingData?.endDate
+          ).toISOString(),
+        },
+        quantity: 1,
+      });
     }
   }
 
   render() {
-
+    const { transaction, isCustomer } = this.props;
     return (
       <FinalForm
         {...this.props}
-        onSubmit={(values, form) => this.props.onSubmit(values, form, { file: this.state.file, removeFile: () => this.removeFile() }, (msg) => this.handleError(msg))}
+        onSubmit={(values, form) =>
+          this.props.onSubmit(
+            values,
+            form,
+            { file: this.state.file, removeFile: () => this.removeFile() },
+            msg => this.handleError(msg)
+          )
+        }
         render={formRenderProps => {
           const {
             rootClassName,
@@ -138,13 +164,32 @@ class SendMessageFormComponent extends Component {
           const submitDisabled = invalid || submitInProgress;
           return (
             <>
-              <Form className={classes} onSubmit={values => handleSubmit(values, form, this.state.file)} enctype="multipart/form-data">
-                {this.state.file &&
+              <Form
+                className={classes}
+                onSubmit={values => handleSubmit(values, form, this.state.file)}
+                enctype="multipart/form-data"
+              >
+                {this.state.file && (
                   <div className={css.SelectedFile}>
                     <p className={css.Filename}>{this.state.file?.name}</p>
                     <X className={css.closeIcon} onClick={() => this.removeFile()} />
                   </div>
-                }
+                )}
+                {transaction?.attributes?.metadata?.profit && (
+                  <div className={css.generatedPriceContainer}>
+                    <div className={css.priceToPayNow}>
+                      <label>Price to pay</label>
+                      <span>{transaction?.attributes?.metadata?.profit}</span>
+                    </div>
+                    <div className={css.priceToPayLater}>
+                      <label>Price to later</label>
+                      <span>
+                        {+transaction?.attributes?.metadata?.totalPurchase -
+                          +transaction?.attributes?.metadata?.profit}
+                      </span>
+                    </div>
+                  </div>
+                )}
                 <div>
                   <FieldTextInput
                     inputRootClass={css.textarea}
@@ -154,6 +199,7 @@ class SendMessageFormComponent extends Component {
                     placeholder={messagePlaceholder}
                     onFocus={this.handleFocus}
                     onBlur={this.handleBlur}
+                    onChange={e => this.setState({ message: e.target.value })}
                   />
                   {this.state.error && <p className={css.errorStyle}>{this.state.error}</p>}
                   {sendMessageError ? (
@@ -165,9 +211,23 @@ class SendMessageFormComponent extends Component {
                   ) : null}
                 </div>
                 <div className={css.submitContainer}>
-                  <SecondaryButtonInline className={css.submitButton} onClick={() => this.setState({ openPricePopUp: true })}>
-                    Generate Price
-                  </SecondaryButtonInline>
+                  {transaction?.attributes?.metadata?.profit && isCustomer && (
+                    <SecondaryButtonInline
+                      className={css.submitButton}
+                      onClick={this.handleCheckout}
+                    >
+                      Checkout
+                    </SecondaryButtonInline>
+                  )}
+                  {!transaction?.attributes?.metadata?.profit && !isCustomer && (
+                    <SecondaryButtonInline
+                      className={css.submitButton}
+                      onClick={() => this.setState({ openPricePopUp: true })}
+                    >
+                      Generate Price
+                    </SecondaryButtonInline>
+                  )}
+
                   <div className={css.sendButtons}>
                     <SecondaryButtonInline
                       className={css.submitButton}
@@ -198,7 +258,10 @@ class SendMessageFormComponent extends Component {
                   </div>
                 </div>
               </Form>
-              <PriceGenratePopUp open={this.state.openPricePopUp} onClose={() => this.setState({ openPricePopUp: false })} />
+              <PriceGenratePopUp
+                open={this.state.openPricePopUp}
+                onClose={() => this.setState({ openPricePopUp: false })}
+              />
             </>
           );
         }}

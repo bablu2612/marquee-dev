@@ -219,6 +219,7 @@ export class TransactionPanelComponent extends Component {
       orderPanel,
       config,
       hasViewingRights,
+      transaction
     } = this.props;
 
     const isCustomer = transactionRole === 'customer';
@@ -275,7 +276,6 @@ export class TransactionPanelComponent extends Component {
     const avaliableAddOn = config?.listing?.listingFields?.find(addon => addon.key === "extras_availale")
     const aaliableOption = avaliableAddOn?.enumOptions?.filter(data => protectedData?.extra_add_on?.includes(data.option))
 
-    console.log('protectedData', listing?.attributes?.publicData, protectedData, aaliableOption)
     return (
       <div className={classes}>
         <div className={css.container}>
@@ -387,6 +387,7 @@ export class TransactionPanelComponent extends Component {
             />
             {showSendMessageForm ? (
               <SendMessageForm
+                isCustomer={isCustomer}
                 formId={this.sendMessageFormName}
                 rootClassName={css.sendMessageForm}
                 messagePlaceholder={intl.formatMessage(
@@ -398,6 +399,9 @@ export class TransactionPanelComponent extends Component {
                 onFocus={this.onSendMessageFormFocus}
                 onBlur={this.onSendMessageFormBlur}
                 onSubmit={this.onMessageSubmit}
+                transaction={transaction}
+                handleSubmitOrderRequest={this.props.handleSubmitOrderRequest}
+
               />
             ) : (
               <div className={css.sendingMessageNotAllowed}>

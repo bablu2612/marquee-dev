@@ -138,7 +138,7 @@ const getDateRangeQuantityAndLineItems = (orderData, code) => {
  * @param {Object} customerCommission
  * @returns {Array} lineItems
  */
-exports.transactionLineItems = (listing, orderData, providerCommission, customerCommission) => {
+exports.transactionLineItems = (listing, orderData, providerCommission, customerCommission, priceToPay) => {
   const publicData = listing.attributes.publicData;
   // Note: the unitType needs to be one of the following:
   // day, night, hour, fixed, or item (these are related to payment processes)
@@ -155,7 +155,8 @@ exports.transactionLineItems = (listing, orderData, providerCommission, customer
   const { priceInSubunits } = priceVariantConfig || {};
   const isPriceInSubunitsValid = Number.isInteger(priceInSubunits) && priceInSubunits >= 0;
 
-  const unitPrice =
+  const unitPrice = priceToPay ? 
+    new Money(priceToPay*100, currency) : 
     isBookable && priceVariationsEnabled && isPriceInSubunitsValid
       ? new Money(priceInSubunits, currency)
       : priceAttribute;

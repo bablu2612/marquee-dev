@@ -13,7 +13,8 @@ const onManageDisableScrolling = (componentId, scrollingDisabled = true) => {
 
 function PriceGenratePopUp({ open, onClose = null }) {
     const dispatch = useDispatch();
-    const { transectionId } = useParams();
+    const { id } = useParams();
+    const transectionId = id
 
     const formik = useFormik({
         initialValues: {
@@ -28,13 +29,14 @@ function PriceGenratePopUp({ open, onClose = null }) {
                 .required('Price is required'),
         }),
         onSubmit: async (values) => {
-            console.log(values, '::::::::::::::::')
+            console.log(transectionId, '::::::::::::::::')
             await dispatch(createContractDetails({
                 PaymemtData: { ...values, date: new Date().toString() },
                 txn_id: transectionId
             })).then(res => {
                 if (res) {
-                    onClose();
+                    window.location.reload();
+                    // onClose();
                     // if (!transectionData?.isEntertainer) {
                     //     gobackToChat();
                     // } else {
@@ -91,10 +93,10 @@ function PriceGenratePopUp({ open, onClose = null }) {
                                 {formik.touched.totalPurchase && formik.errors.totalPurchase && (<div className="error">{formik.errors.totalPurchase}</div>)}
                             </div>
                             {/* Disabled Text Field */}
-                            <div>
-                                <label htmlFor="description">Profit</label>
-                                <input type="text"  {...formik.getFieldProps('profit')} disabled />
-                            </div>
+                            {/* <div> */}
+                                {/* <label htmlFor="description">Profit</label> */}
+                                <input type="hidden"  {...formik.getFieldProps('profit')} disabled />
+                            {/* </div> */}
 
                             {/* <div>
                                 <label htmlFor="date">Date</label>

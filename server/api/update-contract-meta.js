@@ -1,20 +1,17 @@
 const {
-    flexIntegrationSdk,
+    getIntegrationSdk,
 } = require('../api-util/sdk');
 const { UUID } = require('sharetribe-flex-integration-sdk').types;
 
 module.exports = async (req, res) => {
     const { txn_id, PaymemtData } = req.body;
 
-    const integrationSdk = flexIntegrationSdk();
+    const integrationSdk = getIntegrationSdk();
     let transactionsId = new UUID(txn_id);
-
-    console.log(req.body, "req.body")
 
     const data = await integrationSdk.transactions.updateMetadata({
         id: transactionsId,
-        metadata: {
-            PaymemtData: PaymemtData,
+        metadata: {...PaymemtData,
             // entertainerData: entertainerData,
         }
     })
