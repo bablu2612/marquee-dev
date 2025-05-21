@@ -22,7 +22,6 @@ const FeedSection = props => {
   const showFeed = hasMessages || hasTransitions || initialMessageFailed || fetchMessagesError;
 
   const classes = classNames(rootClassName || css.feedContainer, className);
-  console.log(activityFeed, 'activityFeed')
 
   return showFeed ? (
     <div className={classes}>

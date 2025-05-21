@@ -199,7 +199,8 @@ class SendMessageFormComponent extends Component {
                     placeholder={messagePlaceholder}
                     onFocus={this.handleFocus}
                     onBlur={this.handleBlur}
-                    onChange={e => this.setState({ message: e.target.value })}
+                    // value={this.state.message}
+                    // onChange={e => this.setState({ message: e.target.value })}
                   />
                   {this.state.error && <p className={css.errorStyle}>{this.state.error}</p>}
                   {sendMessageError ? (

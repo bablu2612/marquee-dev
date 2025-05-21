@@ -11,7 +11,8 @@ module.exports = async (req, res) => {
 
     const data = await integrationSdk.transactions.updateMetadata({
         id: transactionsId,
-        metadata: {...PaymemtData,
+        metadata: {
+            ...PaymemtData,
             // entertainerData: entertainerData,
         }
     })
