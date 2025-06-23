@@ -13,6 +13,10 @@ import loadable from '@loadable/component';
 
 // Icons
 export { default as IconAdd } from './IconAdd/IconAdd';
+export { default as IconDate } from './IconDate/IconDate';
+export { default as IconLocation } from './IconLocation/IconLocation';
+
+
 export { default as IconAlert } from './IconAlert/IconAlert';
 export { default as IconArrowHead } from './IconArrowHead/IconArrowHead';
 export { default as IconBannedUser } from './IconBannedUser/IconBannedUser';

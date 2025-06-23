@@ -73,8 +73,8 @@ size and position, etc.
 }
 
 .predictionsRootMapbox {
-  /* Google Maps needs 72px bottom padding to accommodate logo, Mapbox doesn't have one */
   padding-bottom: 8px;
+  /* Google Maps needs 72px bottom padding to accommodate logo, Mapbox doesn't have one */
 }
 
 /*
@@ -116,7 +116,7 @@ bottom of the container.
     padding: 9px 24px;
 
     @media (--viewportMedium) {
-      color: var(--colorLightTransparent);
+      color: var(--colorBlack);
       padding: 10px 36px;
       margin: 0;
     }
@@ -127,16 +127,16 @@ bottom of the container.
       border-left: 6px solid var(--colorWhite);
       border-top-right-radius: 20px;
       border-bottom-right-radius: 20px;
-      color: var(--colorWhite);
+      color: var(--marketplaceColor);
     }
   }
 }
 
 .currentLocation {
   composes: p from global;
+  
 }
-
 .currentLocationIcon {
-  margin-right: 10px;
   margin-bottom: 1px;
+  margin-right: 10px;
 }

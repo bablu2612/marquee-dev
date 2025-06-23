@@ -75,7 +75,7 @@ const BookingPeriod = props => {
           />
         </div>
 
-        <div className={css.bookingPeriodSectionRight}>
+        {/* <div className={css.bookingPeriodSectionRight}>
           <div className={css.dayLabel}>
             <FormattedMessage id="OrderBreakdown.bookingEnd" />
           </div>
@@ -92,7 +92,7 @@ const BookingPeriod = props => {
             dateType={dateType}
             timeZone={timeZone}
           />
-        </div>
+        </div> */}
       </div>
     </>
   );
