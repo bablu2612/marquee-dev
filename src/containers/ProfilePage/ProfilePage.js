@@ -180,6 +180,9 @@ export const CustomUserFields = props => {
       <SectionDetailsMaybe {...props} />
       {propsForCustomFields.map(customFieldProps => {
         const { schemaType, key, ...fieldProps } = customFieldProps;
+        if(key === "company_address" || key=== "vat_number" || key=== "website_url"){
+          return null
+        }
         return schemaType === SCHEMA_TYPE_MULTI_ENUM ? (
           <SectionMultiEnumMaybe key={key} {...fieldProps} />
         ) : schemaType === SCHEMA_TYPE_TEXT ? (
