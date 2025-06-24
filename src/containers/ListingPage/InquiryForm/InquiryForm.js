@@ -115,7 +115,7 @@ const InquiryForm = props => (
       const messageRequiredMessage = intl.formatMessage({
         id: 'InquiryForm.messageRequired',
       });
-      const messageRequired = validators.requiredAndNonEmptyString(messageRequiredMessage);
+      const messageRequired = validators.requiredAndNonEmptyString("Total guest is required");
 
       const classes = classNames(rootClassName || css.root, className);
       const submitInProgress = inProgress;
@@ -123,12 +123,7 @@ const InquiryForm = props => (
 
       return (
         <Form className={classes} onSubmit={handleSubmit} enforcePagePreloadFor="OrderDetailsPage">
-          {/* <IconInquiry className={css.icon} /> */}
-          {/* <Heading as="h2" rootClassName={css.heading}>
-            <FormattedMessage id="InquiryForm.heading" values={{ listingTitle }} />
-          </Heading> */}
-
-
+         
 
           <div className={'modal-overlay'}>
       <div className="modal-box inqueryFormCustome">
@@ -151,24 +146,25 @@ const InquiryForm = props => (
       </div>
     </div>
 
-
-          {/* <FieldTextInput
+ <div className="modal-box inqueryFormCustome">
+        <h2 className="modal-title">Total Guests</h2>
+          <FieldTextInput
             className={css.field}
-            type="textarea"
-            name="message"
-            id={formId ? `${formId}.message` : 'message'}
-            label={messageLabel}
+            type="number"
+            name="guests"
+            id={formId ? `${formId}.guests` : 'guests'}
+            // label={"No of Guests"}
 
-            placeholder={messagePlaceholder}
+            placeholder={"Total Guests"}
             validate={messageRequired}
-          /> */}
+          />
+          </div>
           <div className={submitButtonWrapperClassName}>
             <ErrorMessage error={sendInquiryError} />
             <div className='mainbuttonWrapper inqueryFromBtns'>
-            <PrimaryButton type="submit" inProgress={values?.extra_add_on?.length > 0 ? submitInProgress : false} disabled={values?.extra_add_on?.length > 0}>
-              {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}
+            {/* <PrimaryButton type="submit" inProgress={values?.extra_add_on?.length > 0 ? submitInProgress : false} disabled={values?.extra_add_on?.length > 0}>
               Skip
-            </PrimaryButton>
+            </PrimaryButton> */}
 
             <PrimaryButton type="submit" inProgress={values?.extra_add_on?.length === 0 ? submitInProgress : false} disabled={values?.extra_add_on?.length === 0}>
               {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}

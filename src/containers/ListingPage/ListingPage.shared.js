@@ -145,7 +145,7 @@ export const handleSubmitInquiry = parameters => values => {
 
   const listingId = new UUID(params.id);
   const listing = getListing(listingId);
-  const { message="Hello",extra_add_on } = values;
+  const { message="Hello",extra_add_on,guests } = values;
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -161,11 +161,11 @@ export const handleSubmitInquiry = parameters => values => {
   
   const bookingDataNew={
     startDate: formatDate(startDate),
-    endDate: formatDate(endDate)
+    endDate: formatDate(endDate),
   }
 
 console.log('message values',bookingData,values)
-  onSendInquiry(listing, message.trim(),extra_add_on, bookingDataNew)
+  onSendInquiry(listing, message.trim(),extra_add_on, bookingDataNew,guests)
     .then(txId => {
       setInquiryModalOpen(false);
 
