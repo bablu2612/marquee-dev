@@ -44,6 +44,7 @@ export const OrderBreakdownComponent = props => {
     currency,
     marketplaceName,
     intl,
+    listing
   } = props;
 
   const isCustomer = userRole === 'customer';
@@ -113,7 +114,7 @@ export const OrderBreakdownComponent = props => {
         timeZone={timeZone}
       />
 
-      <LineItemBasePriceMaybe lineItems={lineItems} code={lineItemUnitType} intl={intl} />
+      <LineItemBasePriceMaybe lineItems={lineItems} code={lineItemUnitType} intl={intl} listing={listing} />
       <LineItemShippingFeeMaybe lineItems={lineItems} intl={intl} />
       <LineItemPickupFeeMaybe lineItems={lineItems} intl={intl} />
       <LineItemUnknownItemsMaybe lineItems={lineItems} isProvider={isProvider} intl={intl} />
@@ -153,7 +154,7 @@ export const OrderBreakdownComponent = props => {
         intl={intl}
       />
 
-      <LineItemTotalPrice transaction={transaction} isProvider={isProvider} intl={intl} />
+      <LineItemTotalPrice transaction={transaction} isProvider={isProvider} intl={intl} listing={listing} />
 
       {hasCommissionLineItem ? (
         <span className={css.feeInfo}>

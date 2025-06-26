@@ -22,7 +22,7 @@ import css from './OrderBreakdown.module.css';
  * @returns {JSX.Element}
  */
 const LineItemBasePriceMaybe = props => {
-  const { lineItems, code, intl } = props;
+  const { lineItems, code, intl,listing } = props;
   const isNightly = code === LINE_ITEM_NIGHT;
   const isDaily = code === LINE_ITEM_DAY;
   const isHourly = code === LINE_ITEM_HOUR;
@@ -49,6 +49,7 @@ const LineItemBasePriceMaybe = props => {
     : null;
   const unitPrice = unitPurchase ? formatMoney(intl, unitPurchase.unitPrice) : null;
   const total = unitPurchase ? formatMoney(intl, unitPurchase.lineTotal) : null;
+  const totalM = listing?.attributes?.price ? formatMoney(intl, listing?.attributes?.price) : null;
 
   const message = unitPurchase?.seats ? (
     <FormattedMessage
@@ -59,12 +60,21 @@ const LineItemBasePriceMaybe = props => {
     <FormattedMessage id={translationKey} values={{ unitPrice, quantity }} />
   );
 
-  return quantity && total ? (
+  return quantity && total ? (<>
     <div className={css.lineItem}>
-      <span className={css.itemLabel}>{message}</span>
+      {/* <span className={css.itemLabel}>{message}</span> */}
+            <span className={css.itemLabel}>Marquee rental price</span>
+
+      <span className={css.itemValue}>{totalM}</span>
+    </div>
+
+    <div className={css.lineItem}>
+      {/* <span className={css.itemLabel}>{message}</span> */}
+            <span className={css.itemLabel}>Deposit amount</span>
+
       <span className={css.itemValue}>{total}</span>
     </div>
-  ) : null;
+  </>) : null;
 };
 
 export default LineItemBasePriceMaybe;

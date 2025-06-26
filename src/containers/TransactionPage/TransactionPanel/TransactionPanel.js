@@ -275,7 +275,9 @@ export class TransactionPanelComponent extends Component {
 
     const avaliableAddOn = config?.listing?.listingFields?.find(addon => addon.key === "extras_availale")
     const aaliableOption = avaliableAddOn?.enumOptions?.filter(data => protectedData?.extra_add_on?.includes(data.option))
-
+  const slug = createSlug(listingTitle);
+const id= listing.id.uuid
+console.log('protectedData',protectedData?.guests)
     return (
       <div className={classes}>
         <div className={css.container}>
@@ -361,9 +363,23 @@ export class TransactionPanelComponent extends Component {
               </div>
             ) : null}
             <div>
-              <h4>From Customer</h4>
-              <div><p>Start date: <b> {protectedData?.bookingData?.startDate}</b></p></div>
-              <div><p>Start date: <b>{protectedData?.bookingData?.endDate}</b></p></div>
+              {!isProvider&&
+              <div>You have a received a booking enquiry</div>
+              }
+              {/* <h4>From Customer</h4> */}
+                            <div><p>Marquee Enquiry: <b> 
+                                  <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
+                                    {listingTitle}
+                              </NamedLink>
+                              
+                              </b></p></div>
+
+
+              <div><p>Date: <b> {protectedData?.bookingData?.startDate}</b></p></div>
+               <div><p>Postcode: <b> - </b></p></div>
+
+              
+              <div><p>Number of Guests: <b> {protectedData?.guests}</b></p></div>
 
               <div className='add-ons'>
                 <h4>Add-on</h4>
@@ -374,7 +390,9 @@ export class TransactionPanelComponent extends Component {
                   })}
                 </div>
               </div>
-
+{!isProvider &&
+              <div><p>Please confirm the marquees availability on that date then send a finalised quote for that date once you’ve got all the relevant information</p></div>
+}
             </div>
             <FeedSection
               rootClassName={css.feedContainer}
