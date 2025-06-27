@@ -127,9 +127,9 @@ const InquiryForm = props => (
 
           <div className={'modal-overlay'}>
       <div className="modal-box inqueryFormCustome">
-        <h2 className="modal-title">Additional Quote Options</h2>
+        {/* <h2 className="modal-title">Additional Quote Options</h2> */}
         <p className="modal-subtext">
-          Would you also like a quote to include the cost of:
+          Would you like your quote to include:
         </p>
         <div className="checkbox-group">
           {aaliableOption.map((option) => (
@@ -147,7 +147,7 @@ const InquiryForm = props => (
     </div>
 
  <div className="modal-box inqueryFormCustome">
-        <h2 className="modal-title">Total Guests</h2>
+        <p className="modal-title">Please confirm the estimated number of guests for finalised quote</p>
           <FieldTextInput
             className={css.field}
             type="number"
@@ -166,7 +166,7 @@ const InquiryForm = props => (
               Skip
             </PrimaryButton> */}
 
-            <PrimaryButton type="submit" inProgress={values?.extra_add_on?.length === 0 ? submitInProgress : false} disabled={values?.extra_add_on?.length === 0}>
+            <PrimaryButton type="submit" inProgress={values?.extra_add_on?.length === 0 ? submitInProgress : false}>
               {/* <FormattedMessage id="InquiryForm.submitButtonText" /> */}
               Update Quote
             </PrimaryButton>

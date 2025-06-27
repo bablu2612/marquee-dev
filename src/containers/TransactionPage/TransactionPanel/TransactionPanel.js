@@ -94,7 +94,7 @@ export class TransactionPanelComponent extends Component {
     super(props);
     this.state = {
       sendMessageFormFocused: false,
-      isLoading: false
+      isLoading: false,
     };
     this.isMobSaf = false;
     this.sendMessageFormName = 'TransactionPanel.SendMessageForm';
@@ -121,9 +121,7 @@ export class TransactionPanelComponent extends Component {
     this.setState({ sendMessageFormFocused: false });
   }
 
-  sendMessage(reset = false) {
-
-  }
+  sendMessage(reset = false) {}
 
   onMessageSubmit(values, form, fileObject, callback = null) {
     const message = values.message ? values.message.trim() : null;
@@ -135,23 +133,26 @@ export class TransactionPanelComponent extends Component {
     this.setState({ isLoading: true });
     if (fileObject?.file) {
       const formdata = new FormData();
-      formdata.append("file", fileObject?.file, fileObject?.file.name);
+      formdata.append('file', fileObject?.file, fileObject?.file.name);
       const requestOptions = {
-        method: "POST",
+        method: 'POST',
         body: formdata,
-        redirect: "follow"
+        redirect: 'follow',
       };
 
       fetch(`${apiBaseUrl()}/api/upload-file`, requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-          onSendMessage(transactionId, result?.url, config).then((e) => {
-            fileObject?.removeFile();
-            if (!message) {
-              this.setState({ isLoading: false });
-            }
-          }).catch(e => this.setState({ isLoading: false }));
-        }).catch((error) => console.error(error));
+        .then(response => response.json())
+        .then(result => {
+          onSendMessage(transactionId, result?.url, config)
+            .then(e => {
+              fileObject?.removeFile();
+              if (!message) {
+                this.setState({ isLoading: false });
+              }
+            })
+            .catch(e => this.setState({ isLoading: false }));
+        })
+        .catch(error => console.error(error));
     }
 
     if (message) {
@@ -161,12 +162,12 @@ export class TransactionPanelComponent extends Component {
 
       if (emailRegex.test(message) || urlRegex.test(message) || phoneRegex.test(message)) {
         this.setState({ isLoading: false });
-        if (callback) callback("Sending emails, URLs or phone numbers is not allowed.");
+        if (callback) callback('Sending emails, URLs or phone numbers is not allowed.');
 
         return;
       } else {
-        if (callback) callback("");
-        console.log("Sending message:", message);
+        if (callback) callback('');
+        console.log('Sending message:', message);
         // Add your send message logic here
         // setMessage("");
       }
@@ -177,7 +178,8 @@ export class TransactionPanelComponent extends Component {
           if (!file) {
             this.setState({ isLoading: false });
           }
-        }).catch(e => this.setState({ isLoading: false }));
+        })
+        .catch(e => this.setState({ isLoading: false }));
     }
   }
 
@@ -219,7 +221,7 @@ export class TransactionPanelComponent extends Component {
       orderPanel,
       config,
       hasViewingRights,
-      transaction
+      transaction,
     } = this.props;
 
     const isCustomer = transactionRole === 'customer';
@@ -273,11 +275,15 @@ export class TransactionPanelComponent extends Component {
 
     const classes = classNames(rootClassName || css.root, className);
 
-    const avaliableAddOn = config?.listing?.listingFields?.find(addon => addon.key === "extras_availale")
-    const aaliableOption = avaliableAddOn?.enumOptions?.filter(data => protectedData?.extra_add_on?.includes(data.option))
-  const slug = createSlug(listingTitle);
-const id= listing.id.uuid
-console.log('protectedData',protectedData?.guests)
+    const avaliableAddOn = config?.listing?.listingFields?.find(
+      addon => addon.key === 'extras_availale'
+    );
+    const aaliableOption = avaliableAddOn?.enumOptions?.filter(data =>
+      protectedData?.extra_add_on?.includes(data.option)
+    );
+    const slug = createSlug(listingTitle);
+    const id = listing.id.uuid;
+    console.log('protectedData', protectedData?.guests);
     return (
       <div className={classes}>
         <div className={css.container}>
@@ -363,36 +369,69 @@ console.log('protectedData',protectedData?.guests)
               </div>
             ) : null}
             <div>
-              {!isProvider&&
-              <div>You have a received a booking enquiry</div>
-              }
+              {!isProvider && <div>You have a received a booking enquiry</div>}
               {/* <h4>From Customer</h4> */}
-                            <div><p>Marquee Enquiry: <b> 
-                                  <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
-                                    {listingTitle}
-                              </NamedLink>
-                              
-                              </b></p></div>
-
-
-              <div><p>Date: <b> {protectedData?.bookingData?.startDate}</b></p></div>
-               <div><p>Postcode: <b> - </b></p></div>
-
-              
-              <div><p>Number of Guests: <b> {protectedData?.guests}</b></p></div>
-
-              <div className='add-ons'>
-                <h4>Add-on</h4>
-                <div>
-
-                  {aaliableOption?.map(data => {
-                    return <div> <p>{data?.label} : <b>${listing?.attributes?.publicData[`pub_extras_availale_${data.option}_price`]}</b></p></div>
-                  })}
-                </div>
+              <div>
+                <p>
+                  Marquee Enquiry:{' '}
+                  <b>
+                    <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
+                      {listingTitle}
+                    </NamedLink>
+                  </b>
+                </p>
               </div>
-{!isProvider &&
-              <div><p>Please confirm the marquees availability on that date then send a finalised quote for that date once you’ve got all the relevant information</p></div>
-}
+
+              <div>
+                <p>
+                  Date: <b> {protectedData?.bookingData?.startDate}</b>
+                </p>
+              </div>
+              <div>
+                <p>
+                  Postcode: <b> - </b>
+                </p>
+              </div>
+
+              <div>
+                <p>
+                  Number of Guests: <b> {protectedData?.guests}</b>
+                </p>
+              </div>
+
+              {aaliableOption?.length > 0 && (
+                <div className="add-ons">
+                  <h4>Add-on</h4>
+                  <div>
+                    {aaliableOption?.map(data => {
+                      return (
+                        <div>
+                          {' '}
+                          <p>
+                            {data?.label} :{' '}
+                            <b>
+                              $
+                              {
+                                listing?.attributes?.publicData[
+                                  `pub_extras_availale_${data.option}_price`
+                                ]
+                              }
+                            </b>
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {!isProvider && (
+                <div>
+                  <p>
+                    Please confirm the marquees availability on that date then send a finalised
+                    quote for that date once you’ve got all the relevant information
+                  </p>
+                </div>
+              )}
             </div>
             <FeedSection
               rootClassName={css.feedContainer}
@@ -419,7 +458,6 @@ console.log('protectedData',protectedData?.guests)
                 onSubmit={this.onMessageSubmit}
                 transaction={transaction}
                 handleSubmitOrderRequest={this.props.handleSubmitOrderRequest}
-
               />
             ) : (
               <div className={css.sendingMessageNotAllowed}>
